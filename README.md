@@ -1,4 +1,4 @@
-EVENT MANAGEMENT UI
+Pulse UI
 
 ## Setup
 
