@@ -1,17 +1,24 @@
-import AppLayout from "./components/layout/AppLayout";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
-function App() {
+import AppLayout from "./components/layout/AppLayout";
+import Home from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import Profile from "./pages/ProfilePage";
+import RegisterPage from "./pages/RegisterPage";
+
+export default function App() {
   return (
-    <AppLayout>
-      {/* Main content goes here */}
-      <div className="mt-10 text-center">
-        <h1 className="text-3xl font-bold">Welcome to Pulse App</h1>
-        <p className="mt-2 text-gray-600">
-          Use the Login/Register buttons in the header to get started.
-        </p>
-      </div>
-    </AppLayout>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </Route>
+
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;

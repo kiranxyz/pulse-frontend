@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { authClient, useSession } from "../../lib/auth-client";
+import { useAuth } from "../../lib/useAuth.ts";
 
 type Provider = "instagram" | "google" | "facebook";
 
@@ -9,71 +9,56 @@ interface LoginModalProps {
   openRegister: () => void;
 }
 
-export interface User {
-  id?: string;
-  email?: string;
-  name?: string;
-  [key: string]: string | number | boolean | undefined;
-}
-
 export default function LoginModal({ close, openRegister }: LoginModalProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [status, setStatus] = useState("");
-  const [me, setMe] = useState<User | null>(null);
 
-  const { data: session, refetch: refetchSession } = useSession();
+  const { login, logout, session, signInSocial } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg("");
 
-    const { error } = await authClient.signIn.email({ email, password });
-
-    setLoading(false);
-
-    if (error) {
-      setErrorMsg(error.message ?? "Login failed");
-      return;
+    try {
+      await login({ email, password });
+    } catch (err: unknown) {
+      setErrorMsg(err instanceof Error ? err.message : String(err));
+    } finally {
+      setLoading(false);
     }
-
-    await refetchSession();
-    close();
   };
 
-  async function handleSocial(provider: Provider) {
+  const handleSocial = async (provider: Provider) => {
     setStatus(`Starting ${provider} sign in...`);
     try {
-      await authClient.signIn.social({ provider });
-      setStatus(`Redirecting to ${provider}...`);
+      await signInSocial(provider);
+      setStatus(`Redirected to ${provider}`);
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setStatus(`Social sign in error: ${err.message}`);
-      } else {
-        setStatus(`Social sign in error: ${String(err)}`);
-      }
+      setStatus(
+        err instanceof Error
+          ? `Social sign in error: ${err.message}`
+          : `Social sign in error: ${String(err)}`,
+      );
     }
-  }
+  };
 
-  async function handleSignOut() {
+  const handleSignOut = async () => {
     setStatus("Signing out...");
     try {
-      await authClient.signOut();
-      setMe(null);
-      await refetchSession();
+      await logout({ email, password });
       setStatus("Signed out");
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setStatus(`Sign out error: ${err.message}`);
-      } else {
-        setStatus(`Sign out error: ${String(err)}`);
-      }
+      setStatus(
+        err instanceof Error
+          ? `Sign out error: ${err.message}`
+          : `Sign out error: ${String(err)}`,
+      );
     }
-  }
+  };
 
   return (
     <dialog open className="modal">
@@ -152,7 +137,6 @@ export default function LoginModal({ close, openRegister }: LoginModalProps) {
           >
             Continue with Instagram
           </button>
-
           <button
             className="btn btn-outline btn-primary"
             onClick={() => handleSocial("google")}
@@ -160,7 +144,6 @@ export default function LoginModal({ close, openRegister }: LoginModalProps) {
           >
             Continue with Google
           </button>
-
           <button
             className="btn btn-outline btn-secondary"
             onClick={() => handleSocial("facebook")}
@@ -170,14 +153,7 @@ export default function LoginModal({ close, openRegister }: LoginModalProps) {
           </button>
         </section>
 
-        <section className="mt-3 text-sm text-gray-600">
-          {status}
-          {me && (
-            <pre className="mt-2 rounded bg-gray-100 p-2">
-              {JSON.stringify(me, null, 2)}
-            </pre>
-          )}
-        </section>
+        <section className="mt-3 text-sm text-gray-600">{status}</section>
 
         {session?.user && (
           <button

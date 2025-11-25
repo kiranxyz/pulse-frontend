@@ -1,45 +1,62 @@
-import { type ReactNode, useState } from "react";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
-import LoginModal from "../auth/LoginModal";
-import RegisterModal from "../auth/RegisterModal";
-import Header from "./Header";
+import { useAuthContext } from "../../context/AuthProvider";
 
-interface AppLayoutProps {
-  children: ReactNode;
-}
+export default function AppLayout() {
+  const { me, logout } = useAuthContext();
+  const navigate = useNavigate();
 
-export default function AppLayout({ children }: AppLayoutProps) {
-  const [showLogin, setShowLogin] = useState(false);
-  const [showRegister, setShowRegister] = useState(false);
+  async function handleLogout() {
+    try {
+      await logout({ email: me?.email || "", password: "" });
+      navigate("/");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  }
 
   return (
     <>
-      <Header
-        openLoginModal={() => setShowLogin(true)}
-        openRegisterModal={() => setShowRegister(true)}
-      />
+      <nav className="flex justify-between bg-gray-100 p-4 shadow">
+        <div className="flex items-center gap-4">
+          <Link to="/" className="text-xl font-bold">
+            Pulse
+          </Link>
 
-      {showLogin && (
-        <LoginModal
-          close={() => setShowLogin(false)}
-          openRegister={() => {
-            setShowLogin(false);
-            setShowRegister(true);
-          }}
-        />
-      )}
+          {me && (
+            <Link to="/profile" className="text-blue-600">
+              Profile
+            </Link>
+          )}
+        </div>
 
-      {showRegister && (
-        <RegisterModal
-          close={() => setShowRegister(false)}
-          openLogin={() => {
-            setShowRegister(false);
-            setShowLogin(true);
-          }}
-        />
-      )}
+        <div className="flex items-center gap-4">
+          {!me && (
+            <>
+              <Link to="/register" className="text-blue-600">
+                Register
+              </Link>
+              <Link to="/login" className="text-blue-600">
+                Login
+              </Link>
+            </>
+          )}
 
-      <main>{children}</main>
+          {me && (
+            <>
+              <span className="text-gray-700">{`Hi, ${me.email}`}</span>
+              <button
+                onClick={handleLogout}
+                className="rounded bg-violet-900 px-3 py-1 text-white"
+              >
+                Logout
+              </button>
+            </>
+          )}
+        </div>
+      </nav>
+
+      <Outlet />
     </>
   );
 }

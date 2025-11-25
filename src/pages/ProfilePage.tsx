@@ -1,19 +1,18 @@
 import { useState } from "react";
 
-import { useSession } from "../lib/auth-client";
+import { useAuthContext } from "../context/AuthProvider";
 
 export default function ProfilePage() {
-  const { data: session, refetch: refetchSession } = useSession();
+  const { me, loading, refetch } = useAuthContext();
 
-  const [fullName, setFullName] = useState(session?.user?.name || "");
-  const [email, setEmail] = useState(session?.user?.email || "");
+  const [fullName, setFullName] = useState(me?.username || "");
+  const [email, setEmail] = useState(me?.email || "");
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState<File | null>(null);
   const [status, setStatus] = useState("");
 
-  if (!session?.user) {
-    return <p>You must be logged in to view your profile.</p>;
-  }
+  if (loading) return <p>Loading profile...</p>;
+  if (!me) return <p>You must be logged in to view your profile.</p>;
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) setAvatar(e.target.files[0]);
@@ -23,16 +22,19 @@ export default function ProfilePage() {
     setStatus("Saving profile...");
     try {
       const formData = new FormData();
-      formData.append("name", fullName);
+      formData.append("username", fullName);
       formData.append("email", email);
       if (password) formData.append("password", password);
       if (avatar) formData.append("avatar", avatar);
 
-      const res = await fetch("http://localhost:8080/api/users/profile", {
-        method: "POST",
-        credentials: "include",
-        body: formData,
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_PULSE_BACKEND_API_URL}/api/profile`,
+        {
+          method: "PUT",
+          credentials: "include",
+          body: formData,
+        },
+      );
 
       if (!res.ok) {
         const text = await res.text();
@@ -41,7 +43,7 @@ export default function ProfilePage() {
       }
 
       setStatus("Profile updated!");
-      await refetchSession();
+      await refetch();
     } catch (err: unknown) {
       setStatus(`Error: ${err instanceof Error ? err.message : String(err)}`);
     }
@@ -52,11 +54,8 @@ export default function ProfilePage() {
       <h1 className="mb-6 text-2xl font-bold">Profile</h1>
 
       <section className="mb-4">
-        <label className="mb-1 block font-medium" htmlFor="fullName">
-          Full Name
-        </label>
+        <label className="mb-1 block font-medium">Full Name</label>
         <input
-          id="fullName"
           type="text"
           className="input input-bordered w-full"
           value={fullName}
@@ -65,11 +64,8 @@ export default function ProfilePage() {
       </section>
 
       <section className="mb-4">
-        <label className="mb-1 block font-medium" htmlFor="email">
-          Email
-        </label>
+        <label className="mb-1 block font-medium">Email</label>
         <input
-          id="email"
           type="email"
           className="input input-bordered w-full"
           value={email}
@@ -78,11 +74,8 @@ export default function ProfilePage() {
       </section>
 
       <section className="mb-4">
-        <label className="mb-1 block font-medium" htmlFor="password">
-          Change Password
-        </label>
+        <label className="mb-1 block font-medium">Change Password</label>
         <input
-          id="password"
           type="password"
           className="input input-bordered w-full"
           placeholder="Leave blank to keep current password"
@@ -92,10 +85,8 @@ export default function ProfilePage() {
       </section>
 
       <section className="mb-4">
-        <label className="mb-1 block font-medium" htmlFor="avatar">
-          Avatar
-        </label>
-        <input id="avatar" type="file" onChange={handleAvatarChange} />
+        <label className="mb-1 block font-medium">Avatar</label>
+        <input type="file" onChange={handleAvatarChange} />
       </section>
 
       <button className="btn btn-primary mt-4" onClick={handleSaveProfile}>

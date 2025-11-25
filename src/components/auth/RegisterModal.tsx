@@ -1,6 +1,8 @@
 import { useState } from "react";
 
-import { authClient } from "../../lib/auth-client";
+import { useAuth } from "../../lib/useAuth.ts";
+
+// import the centralized auth hook
 
 interface RegisterModalProps {
   close: () => void;
@@ -20,42 +22,19 @@ export default function RegisterModal({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const { register } = useAuth();
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      const { error: signupError } = await authClient.signUp.email({
-        email,
-        password,
-        name: username,
-      });
-
-      if (signupError) {
-        setError(signupError.message ?? "Registration failed");
-        setLoading(false);
-        return;
-      }
-
-      const res = await fetch("http://localhost:8080/api/users/profile", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, address, title, role }),
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        setError(`Failed to save profile: ${text}`);
-        setLoading(false);
-        return;
-      }
-
-      setLoading(false);
+      await register({ email, password, username, title, address, role });
       close();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err));
+    } finally {
       setLoading(false);
     }
   };
@@ -84,6 +63,7 @@ export default function RegisterModal({
                 onChange={(e) => setUsername(e.target.value)}
               />
             </fieldset>
+
             <fieldset className="form-control mt-4">
               <legend className="font-medium">Title</legend>
               <input
@@ -94,7 +74,7 @@ export default function RegisterModal({
                 onChange={(e) => setTitle(e.target.value)}
               />
             </fieldset>
-            ´{" "}
+
             <fieldset className="form-control mt-4">
               <legend className="font-medium">Address</legend>
               <input
@@ -105,6 +85,7 @@ export default function RegisterModal({
                 onChange={(e) => setAddress(e.target.value)}
               />
             </fieldset>
+
             <fieldset className="form-control mt-4">
               <legend className="font-medium">Email</legend>
               <input
@@ -116,6 +97,7 @@ export default function RegisterModal({
                 onChange={(e) => setEmail(e.target.value)}
               />
             </fieldset>
+
             <fieldset className="form-control mt-4">
               <legend className="font-medium">Password</legend>
               <input
@@ -127,6 +109,7 @@ export default function RegisterModal({
                 onChange={(e) => setPassword(e.target.value)}
               />
             </fieldset>
+
             <fieldset className="form-control mt-4">
               <legend className="font-medium">Role</legend>
               <select
@@ -140,6 +123,7 @@ export default function RegisterModal({
                 <option value="organizer">Organizer</option>
               </select>
             </fieldset>
+
             <footer className="modal-action mt-6 flex justify-end gap-2">
               <button type="button" className="btn btn-ghost" onClick={close}>
                 Cancel

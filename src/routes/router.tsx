@@ -5,6 +5,7 @@ import ErrorPage from "../pages/ErrorPage";
 import EventsPage from "../pages/EventsPage";
 import HomePage from "../pages/HomePage";
 import ProfilePage from "../pages/ProfilePage";
+import ProtectedRoute from "./ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -13,7 +14,14 @@ export const router = createBrowserRouter([
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/events", element: <EventsPage /> },
-      { path: "/profile", element: <ProfilePage /> },
+      {
+        path: "/profile",
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ]);
