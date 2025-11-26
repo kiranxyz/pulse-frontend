@@ -24,7 +24,7 @@ export default function RegisterPage() {
         role,
         password,
       });
-      navigate("/profile");
+      navigate("/");
     } catch (err) {
       console.error("Registration failed:", err);
       alert("Registration failed");

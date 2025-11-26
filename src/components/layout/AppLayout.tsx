@@ -22,12 +22,6 @@ export default function AppLayout() {
           <Link to="/" className="text-xl font-bold">
             Pulse
           </Link>
-
-          {me && (
-            <Link to="/profile" className="text-blue-600">
-              Profile
-            </Link>
-          )}
         </div>
 
         <div className="flex items-center gap-4">
@@ -43,15 +37,32 @@ export default function AppLayout() {
           )}
 
           {me && (
-            <>
-              <span className="text-gray-700">{`Hi, ${me.email}`}</span>
+            <div className="flex items-center gap-3">
+              {me.avatar ? (
+                <img
+                  src={`${import.meta.env.VITE_PULSE_BACKEND_API_URL}/uploads/${me.avatar}`}
+                  alt="User Avatar"
+                  className="h-8 w-8 rounded-full object-cover"
+                />
+              ) : (
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 text-sm text-white">
+                  {me.username?.[0].toUpperCase()}
+                </div>
+              )}
+
+              <span className="text-gray-700">Hi, {me.username}</span>
+
+              <Link to="/profile" className="text-blue-600">
+                Profile
+              </Link>
+
               <button
                 onClick={handleLogout}
-                className="rounded bg-violet-900 px-3 py-1 text-white"
+                className="rounded bg-purple-900 px-3 py-1 text-white"
               >
                 Logout
               </button>
-            </>
+            </div>
           )}
         </div>
       </nav>

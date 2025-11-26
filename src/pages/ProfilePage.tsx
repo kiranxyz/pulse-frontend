@@ -1,13 +1,16 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useAuthContext } from "../context/AuthProvider";
 
 export default function ProfilePage() {
-  const { me, loading, refetch } = useAuthContext();
+  const { me, loading, refetch, logout } = useAuthContext();
+  const navigate = useNavigate();
 
-  const [fullName, setFullName] = useState(me?.username || "");
+  const [username, setUsername] = useState(me?.username || "");
   const [email, setEmail] = useState(me?.email || "");
-  const [password, setPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [avatar, setAvatar] = useState<File | null>(null);
   const [status, setStatus] = useState("");
 
@@ -22,9 +25,16 @@ export default function ProfilePage() {
     setStatus("Saving profile...");
     try {
       const formData = new FormData();
-      formData.append("username", fullName);
+      formData.append("username", username);
       formData.append("email", email);
-      if (password) formData.append("password", password);
+      if (newPassword) {
+        if (!currentPassword) {
+          setStatus("Current password is required to change password");
+          return;
+        }
+        formData.append("password", newPassword);
+        formData.append("currentPassword", currentPassword);
+      }
       if (avatar) formData.append("avatar", avatar);
 
       const res = await fetch(
@@ -43,9 +53,38 @@ export default function ProfilePage() {
       }
 
       setStatus("Profile updated!");
+      setCurrentPassword("");
+      setNewPassword("");
       await refetch();
     } catch (err: unknown) {
       setStatus(`Error: ${err instanceof Error ? err.message : String(err)}`);
+    }
+  };
+
+  const handleDeleteProfile = async () => {
+    if (!confirm("Are you sure you want to delete your profile?")) return;
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_PULSE_BACKEND_API_URL}/api/profile`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        },
+      );
+
+      if (!res.ok) {
+        const text = await res.text();
+        alert(`Failed to delete profile: ${text}`);
+        return;
+      }
+
+      alert("Profile deleted successfully!");
+      await logout({ email: me.email || "", password: "" });
+      navigate("/");
+    } catch (err) {
+      console.error("Delete profile error:", err);
+      alert("An error occurred while deleting your profile.");
     }
   };
 
@@ -54,12 +93,12 @@ export default function ProfilePage() {
       <h1 className="mb-6 text-2xl font-bold">Profile</h1>
 
       <section className="mb-4">
-        <label className="mb-1 block font-medium">Full Name</label>
+        <label className="mb-1 block font-medium">Username</label>
         <input
           type="text"
           className="input input-bordered w-full"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
       </section>
 
@@ -74,13 +113,24 @@ export default function ProfilePage() {
       </section>
 
       <section className="mb-4">
-        <label className="mb-1 block font-medium">Change Password</label>
+        <label className="mb-1 block font-medium">Current Password</label>
+        <input
+          type="password"
+          className="input input-bordered w-full"
+          placeholder="Required to change password"
+          value={currentPassword}
+          onChange={(e) => setCurrentPassword(e.target.value)}
+        />
+      </section>
+
+      <section className="mb-4">
+        <label className="mb-1 block font-medium">New Password</label>
         <input
           type="password"
           className="input input-bordered w-full"
           placeholder="Leave blank to keep current password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
         />
       </section>
 
@@ -89,9 +139,17 @@ export default function ProfilePage() {
         <input type="file" onChange={handleAvatarChange} />
       </section>
 
-      <button className="btn btn-primary mt-4" onClick={handleSaveProfile}>
-        Save Profile
-      </button>
+      <div className="flex gap-4">
+        <button className="btn btn-primary mt-4" onClick={handleSaveProfile}>
+          Save Profile
+        </button>
+        <button
+          className="btn btn-outline btn-error mt-4"
+          onClick={handleDeleteProfile}
+        >
+          Delete Profile
+        </button>
+      </div>
 
       {status && <p className="mt-3 text-sm text-gray-600">{status}</p>}
     </main>

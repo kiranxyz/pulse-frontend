@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { authClient } from "../../lib/auth-client";
+import { useAuth } from "../../lib/useAuth.ts";
 import { useSession } from "../../lib/useAuthSession";
 
 interface HeaderProps {
@@ -18,6 +19,7 @@ export default function Header({
   const handleLogout = async () => {
     await authClient.signOut();
   };
+  const { me } = useAuth();
 
   return (
     <header className="bg-base-100 border-b">
@@ -45,6 +47,13 @@ export default function Header({
 
         {session?.user ? (
           <div className="flex items-center gap-4">
+            {me?.avatar && (
+              <img
+                src={`${import.meta.env.VITE_PULSE_BACKEND_API_URL}/uploads/${me.avatar}`}
+                alt="User Avatar"
+                className="h-10 w-10 rounded-full object-cover"
+              />
+            )}
             <span className="text-base-content/80 text-sm">
               Welcome, <strong>{session.user.email}</strong>
             </span>

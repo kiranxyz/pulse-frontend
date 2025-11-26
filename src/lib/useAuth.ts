@@ -16,27 +16,42 @@ export function useAuth() {
   const [me, setMe] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔄 REFRESH SESSION
-  async function refetch() {
+  const refetch = async () => {
     try {
-      const res = await fetch(`${BASE_URL}/api/auth/native/get-session`, {
-        credentials: "include",
-      });
-      const data = await res.json();
-      setMe(data.user || null);
+      const sessionRes = await fetch(
+        `${BASE_URL}/api/auth/native/get-session`,
+        {
+          credentials: "include",
+        },
+      );
+      const sessionData = await sessionRes.json();
+      let user = sessionData.user || null;
+
+      if (user) {
+        const profileRes = await fetch(`${BASE_URL}/api/profile`, {
+          credentials: "include",
+        });
+        const profileData = await profileRes.json();
+
+        user = {
+          ...(user as User),
+          username: profileData.username,
+          avatar: profileData.avatar,
+        };
+      }
+
+      setMe(user);
     } catch {
       setMe(null);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  // Load initial session
   useEffect(() => {
     refetch();
   }, []);
 
-  // 🔐 LOGIN
   async function login({
     email,
     password,
@@ -54,10 +69,9 @@ export function useAuth() {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Login failed");
 
-    await refetch(); // ensure UI updates
+    await refetch();
   }
 
-  // 📝 REGISTER
   async function register(payload: {
     email: string;
     password: string;
@@ -69,17 +83,20 @@ export function useAuth() {
     const res = await fetch(`${BASE_URL}/api/auth/native/sign-up/email`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        email: payload.email.trim(),
+        password: payload.password,
+      }),
       credentials: "include",
     });
-
+    console.log(payload);
+    console.log("Register response:", res);
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Registration failed");
-
-    await refetch(); // ensure UI updates
+    await syncProfile();
+    await refetch();
   }
 
-  // 🚪 LOGOUT
   async function logout({
     email,
     password,
@@ -100,12 +117,31 @@ export function useAuth() {
     setMe(null);
   }
 
-  // 🌐 SOCIAL LOGIN PLACEHOLDER
+  async function syncProfile() {
+    try {
+      const res = await fetch(`${BASE_URL}/api/profile/sync`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to sync profile");
+      }
+
+      const data = await res.json();
+      setMe({ ...me, avatar: data.avatar, username: data.username });
+      return data;
+    } catch (err) {
+      console.error("Sync profile failed:", err);
+      return null;
+    }
+  }
+
   async function signInSocial(provider: "instagram" | "google" | "facebook") {
     console.log("Social login placeholder:", provider);
   }
 
-  // Compatibility with your current LoginModal
   const session = { user: me };
 
   return {
@@ -114,8 +150,9 @@ export function useAuth() {
     login,
     register,
     logout,
+    syncProfile,
     signInSocial,
     session,
-    refetch, // <<< added here
+    refetch,
   };
 }

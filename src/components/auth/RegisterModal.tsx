@@ -2,8 +2,6 @@ import { useState } from "react";
 
 import { useAuth } from "../../lib/useAuth.ts";
 
-// import the centralized auth hook
-
 interface RegisterModalProps {
   close: () => void;
   openLogin: () => void;
