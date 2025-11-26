@@ -77,8 +77,9 @@ export function useAuth() {
     password: string;
     username: string;
     title: string;
-    address: string;
+    location: string;
     role: string;
+    age: string;
   }) {
     const res = await fetch(`${BASE_URL}/api/auth/native/sign-up/email`, {
       method: "POST",
@@ -138,10 +139,6 @@ export function useAuth() {
     }
   }
 
-  async function signInSocial(provider: "instagram" | "google" | "facebook") {
-    console.log("Social login placeholder:", provider);
-  }
-
   const session = { user: me };
 
   return {
@@ -151,7 +148,6 @@ export function useAuth() {
     register,
     logout,
     syncProfile,
-    signInSocial,
     session,
     refetch,
   };

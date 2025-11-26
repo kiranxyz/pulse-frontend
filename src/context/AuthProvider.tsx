@@ -11,13 +11,12 @@ export interface AuthContextValue {
     password: string;
     username: string;
     title: string;
-    address: string;
+    location: string;
     role: string;
+    age: string;
   }) => Promise<void>;
   logout: (payload: { email: string; password: string }) => Promise<void>;
-  signInSocial: (
-    provider: "instagram" | "google" | "facebook",
-  ) => Promise<void>;
+
   session: { user: User | null };
   refetch: () => Promise<void>;
 }

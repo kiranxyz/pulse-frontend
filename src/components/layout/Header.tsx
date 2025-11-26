@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 
-import { authClient } from "../../lib/auth-client";
 import { useAuth } from "../../lib/useAuth.ts";
 import { useSession } from "../../lib/useAuthSession";
 
@@ -14,12 +13,19 @@ export default function Header({
   openRegisterModal,
 }: HeaderProps) {
   const { data: session, isPending } = useSession();
-  console.log("session in Header:", session);
+  const { me } = useAuth();
+
+  const avatarSrc = me?.avatar
+    ? `${import.meta.env.VITE_PULSE_BACKEND_API_URL}/uploads/${me.avatar}`
+    : "";
 
   const handleLogout = async () => {
-    await authClient.signOut();
+    await fetch(`${import.meta.env.VITE_PULSE_BACKEND_API_URL}/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+    window.location.reload();
   };
-  const { me } = useAuth();
 
   return (
     <header className="bg-base-100 border-b">
@@ -37,9 +43,8 @@ export default function Header({
 
         {isPending && (
           <div
-            role="status"
-            aria-live="polite"
             className="loading loading-spinner loading-sm text-primary"
+            role="status"
           >
             <span className="sr-only">Loading session…</span>
           </div>
@@ -47,9 +52,9 @@ export default function Header({
 
         {session?.user ? (
           <div className="flex items-center gap-4">
-            {me?.avatar && (
+            {avatarSrc && (
               <img
-                src={`${import.meta.env.VITE_PULSE_BACKEND_API_URL}/uploads/${me.avatar}`}
+                src={avatarSrc}
                 alt="User Avatar"
                 className="h-10 w-10 rounded-full object-cover"
               />
