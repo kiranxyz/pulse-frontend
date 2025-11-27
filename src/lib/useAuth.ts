@@ -138,7 +138,24 @@ export function useAuth() {
       return null;
     }
   }
+  const fetchProfile = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${import.meta.env.VITE_PULSE_BACKEND_API_URL}`, {
+        credentials: "include",
+      });
 
+      if (!res.ok) throw new Error("Failed to fetch profile");
+
+      const data = await res.json();
+      setMe(data);
+    } catch (err) {
+      console.error(err);
+      setMe(null);
+    } finally {
+      setLoading(false);
+    }
+  };
   const session = { user: me };
 
   return {
@@ -149,6 +166,7 @@ export function useAuth() {
     logout,
     syncProfile,
     session,
+    fetchProfile,
     refetch,
   };
 }

@@ -228,7 +228,6 @@ export default function RegisterModal({
             </div>
           </div>
 
-          {/* Role */}
           <div>
             <label htmlFor="role" className="mb-1 block text-sm font-medium">
               Role
@@ -254,7 +253,6 @@ export default function RegisterModal({
             </select>
           </div>
 
-          {/* Age Confirmation */}
           <div className="bg-base-200 mt-2 rounded-lg border p-3">
             <label className="flex cursor-pointer items-center gap-3">
               <input
