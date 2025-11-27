@@ -1,14 +1,10 @@
 export default function Footer() {
   return (
-    <footer
-      style={{
-        padding: "20px",
-        backgroundColor: "#f5f5f5",
-        textAlign: "center",
-        marginTop: "50px",
-      }}
-    >
-      <p>© 2025 Pulse. All rights reserved.</p>
+    <footer className="bg-base-200 mt-12 py-6 text-center">
+      <p className="text-base-content/70 text-sm">
+        © 2025 <span className="font-semibold">Pulse</span>. All rights
+        reserved.
+      </p>
     </footer>
   );
 }
