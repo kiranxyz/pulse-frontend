@@ -1,24 +1,26 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AdminHome from "./pages/AdminHome";
+import AdminDashboard from "./components/dashboard/AdminDashboard";
+import CreateEvent from "./components/dashboard/CreateEvent";
+import EventEdit from "./components/dashboard/EventEdit";
+import HomePage from "./pages/HomePage";
+import EventDetails from "./pages/EventDetails";
+import React from "react";
 
-import AppLayout from "./components/layout/AppLayout";
-import Home from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
-import Profile from "./pages/ProfilePage";
-import RegisterPage from "./pages/RegisterPage";
-
-export default function App() {
+function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
-        <Route element={<AppLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-        </Route>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/events/:id" element={<EventDetails />} />
 
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/events/create" element={<CreateEvent />} />
+        <Route path="/admin/events/:id/edit" element={<EventEdit />} />
+
+        <Route path="*" element={<div>Page Not Found</div>} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
