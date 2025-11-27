@@ -16,7 +16,7 @@ export interface AuthContextValue {
     age: string;
   }) => Promise<void>;
   logout: (payload: { email: string; password: string }) => Promise<void>;
-
+  fetchProfile: () => Promise<void>;
   session: { user: User | null };
   refetch: () => Promise<void>;
 }

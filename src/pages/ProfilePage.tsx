@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { useAuthContext } from "../context/AuthProvider";
 
 export default function ProfilePage() {
-  const { me, loading, refetch, logout } = useAuthContext();
-  const navigate = useNavigate();
+  const { me, loading, refetch } = useAuthContext();
 
   const [username, setUsername] = useState(me?.username || "");
-  const [email, setEmail] = useState(me?.email || "");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [avatar, setAvatar] = useState<File | null>(null);
@@ -19,7 +16,6 @@ export default function ProfilePage() {
   );
   const [status, setStatus] = useState("");
 
-  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const passwordStrength = (pwd: string) => {
     let score = 0;
     if (pwd.length >= 8) score++;
@@ -27,59 +23,55 @@ export default function ProfilePage() {
     if (/[a-z]/.test(pwd)) score++;
     if (/[0-9]/.test(pwd)) score++;
     if (/[^A-Za-z0-9]/.test(pwd)) score++;
-    return score; // 0..5
+    return score;
   };
-  const pwdScore = passwordStrength(newPassword);
-  const pwdStrong = pwdScore >= 4;
 
+  const pwdStrong = passwordStrength(newPassword) >= 4;
+
+  // Keep preview avatar in sync
   useEffect(() => {
     if (me?.avatar) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPreviewAvatar(
         `${import.meta.env.VITE_PULSE_BACKEND_API_URL}/uploads/${me.avatar}`,
       );
     }
-  }, [me?.avatar]);
+    setUsername(me?.username || "");
+  }, [me]);
 
   if (loading) return <p>Loading profile...</p>;
   if (!me) return <p>You must be logged in to view your profile.</p>;
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      if (previewAvatar && previewAvatar.startsWith("blob:")) {
-        URL.revokeObjectURL(previewAvatar);
-      }
-      setAvatar(file);
-      setPreviewAvatar(URL.createObjectURL(file));
+    if (!file) return;
+
+    if (previewAvatar && previewAvatar.startsWith("blob:")) {
+      URL.revokeObjectURL(previewAvatar);
     }
+
+    setAvatar(file);
+    setPreviewAvatar(URL.createObjectURL(file));
   };
 
   const handleSaveProfile = async () => {
-    if (!emailValid) {
-      setStatus("Please enter a valid email.");
-      return;
-    }
-    if (newPassword && !pwdStrong) {
-      setStatus(
+    if (newPassword && !pwdStrong)
+      return setStatus(
         "New password is weak. Minimum 8 chars, include uppercase, lowercase, number & symbol.",
       );
-      return;
-    }
 
     setStatus("Saving profile...");
+
     try {
       const formData = new FormData();
       formData.append("username", username);
-      formData.append("email", email);
+
       if (newPassword) {
-        if (!currentPassword) {
-          setStatus("Current password is required to change password");
-          return;
-        }
+        if (!currentPassword)
+          return setStatus("Current password is required to change password");
         formData.append("password", newPassword);
         formData.append("currentPassword", currentPassword);
       }
+
       if (avatar) formData.append("avatar", avatar);
 
       const res = await fetch(
@@ -97,11 +89,11 @@ export default function ProfilePage() {
         return;
       }
 
-      const updatedUser = await res.json();
+      const updated = await res.json();
 
-      if (updatedUser.avatar) {
+      if (updated.avatar) {
         setPreviewAvatar(
-          `${import.meta.env.VITE_PULSE_BACKEND_API_URL}/uploads/${updatedUser.avatar}`,
+          `${import.meta.env.VITE_PULSE_BACKEND_API_URL}/uploads/${updated.avatar}`,
         );
       }
 
@@ -112,33 +104,6 @@ export default function ProfilePage() {
       await refetch();
     } catch (err: unknown) {
       setStatus(`Error: ${err instanceof Error ? err.message : String(err)}`);
-    }
-  };
-
-  const handleDeleteProfile = async () => {
-    if (!confirm("Are you sure you want to delete your profile?")) return;
-
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_PULSE_BACKEND_API_URL}/api/profile`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        },
-      );
-
-      if (!res.ok) {
-        const text = await res.text();
-        alert(`Failed to delete profile: ${text}`);
-        return;
-      }
-
-      alert("Profile deleted successfully!");
-      await logout({ email: me.email || "", password: "" });
-      navigate("/");
-    } catch (err) {
-      console.error("Delete profile error:", err);
-      alert("An error occurred while deleting your profile.");
     }
   };
 
@@ -167,35 +132,14 @@ export default function ProfilePage() {
       </section>
 
       <section className="mb-4">
-        <label className="mb-1 block font-medium">Email</label>
-        <input
-          type="email"
-          className={`input input-bordered w-full rounded-lg ${
-            email && !emailValid ? "border-red-500" : ""
-          }`}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        {email && !emailValid && (
-          <p className="mt-1 text-sm text-red-500">Invalid email format</p>
-        )}
-      </section>
-      <section className="mb-4">
         <label className="mb-1 block font-medium">Current Password</label>
         <input
           type="password"
-          className={`input input-bordered w-full rounded-lg ${
-            newPassword && !currentPassword ? "border-red-500" : ""
-          }`}
+          className="input input-bordered w-full rounded-lg"
           placeholder="Required to change password"
           value={currentPassword}
           onChange={(e) => setCurrentPassword(e.target.value)}
         />
-        {newPassword && !currentPassword && (
-          <p className="mt-1 text-sm text-red-500">
-            You must enter your current password to change it
-          </p>
-        )}
       </section>
 
       <section className="mb-4">
@@ -209,12 +153,6 @@ export default function ProfilePage() {
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
         />
-        {newPassword && !pwdStrong && (
-          <p className="mt-1 text-sm text-red-500">
-            Weak password: Minimum 8 characters, must include uppercase,
-            lowercase, number & symbol
-          </p>
-        )}
       </section>
 
       <section className="mb-4">
@@ -228,12 +166,6 @@ export default function ProfilePage() {
           onClick={handleSaveProfile}
         >
           Save Profile
-        </button>
-        <button
-          className="btn btn-outline btn-error mt-4 rounded-lg"
-          onClick={handleDeleteProfile}
-        >
-          Delete Profile
         </button>
       </div>
 
