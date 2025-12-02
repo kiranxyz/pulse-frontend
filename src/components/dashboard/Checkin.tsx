@@ -42,39 +42,33 @@ export default function CheckInPage() {
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-900 to-slate-700 p-6">
-      <div className="w-full max-w-md animate-[fadeIn_0.7s_ease-out] rounded-2xl border border-white/20 bg-white/10 p-6 shadow-2xl backdrop-blur-xl">
-        <h1 className="mb-6 text-center text-2xl font-bold text-white">
-          Event Check-In
-        </h1>
+    <main className="mx-auto mt-10 max-w-xl rounded-lg bg-white p-6 shadow-md">
+      <h1 className="mb-6 text-2xl font-bold">Check In Ticket</h1>
 
-        <div className="mb-4">
-          <label className="mb-1 block text-sm font-medium text-white/80">
-            Ticket ID
-          </label>
-          <input
-            type="text"
-            className="w-full rounded-lg bg-white/20 px-4 py-3 text-white placeholder-white/40 transition focus:ring-2 focus:ring-blue-400 focus:outline-none"
-            placeholder="Enter ticket ID"
-            value={ticketId}
-            onChange={(e) => setTicketId(e.target.value)}
-          />
-        </div>
+      <section className="mb-4">
+        <label className="mb-1 block font-medium">Ticket ID</label>
+        <input
+          type="text"
+          className="input input-bordered w-full rounded-lg"
+          placeholder="Enter ticket ID"
+          value={ticketId}
+          onChange={(e) => setTicketId(e.target.value)}
+        />
+      </section>
 
-        <button
-          onClick={handleCheckIn}
-          disabled={loading}
-          className="mt-2 w-full rounded-lg bg-blue-600 py-3 font-semibold text-white transition active:scale-95 disabled:bg-blue-400"
-        >
-          {loading ? "Checking..." : "Check In"}
-        </button>
+      <button
+        onClick={handleCheckIn}
+        disabled={loading}
+        className="btn btn-primary w-full rounded-lg"
+      >
+        {loading ? "Checking..." : "Check In"}
+      </button>
 
-        {status && (
-          <p className="mt-4 animate-[slideUp_0.4s_ease-out] text-center text-sm text-white/90">
-            {status}
-          </p>
-        )}
-      </div>
+      {status && (
+        <p className="mt-4 animate-[slideUp_0.4s_ease-out] text-sm text-gray-700">
+          {status}
+        </p>
+      )}
     </main>
   );
 }
