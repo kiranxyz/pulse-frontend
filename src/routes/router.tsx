@@ -3,6 +3,7 @@ import { Navigate, createBrowserRouter } from "react-router-dom";
 import AdminLayout from "../components/admin/AdminLayout";
 import AdminOverview from "../components/admin/AdminOverview";
 import AdminEvents from "../components/dashboard/AdminEvents";
+import CheckInPage from "../components/dashboard/Checkin";
 import CreateEventPage from "../components/dashboard/CreateEvent";
 import EditEventPage from "../components/dashboard/EventEdit";
 // Layouts
@@ -56,6 +57,7 @@ export const router = createBrowserRouter([
           { path: "dashboard/events", element: <AdminEvents /> },
           { path: "dashboard/create", element: <CreateEventPage /> },
           { path: "dashboard/edit/:id", element: <EditEventPage /> },
+          { path: "dashboard/checkin", element: <CheckInPage /> },
         ],
       },
     ],
