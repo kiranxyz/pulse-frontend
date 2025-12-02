@@ -49,7 +49,7 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen"> 
-      <h1 className="text-3xl md:text-4xl text-white font-medium text-center md:text-left p-3">
+      <h1 className="text-3xl md:text-4xl text-black font-medium text-center md:text-left p-3">
         Find Your Perfect Event
       </h1>
 

@@ -26,7 +26,7 @@ export default function EventSearchFilter({ onFilterChange }: EventFilterProps) 
   };
 
   return (
-    <section className="p-6 rounded-2xl mb-10 ]">
+    <section className="p-6 rounded-2xl mb-10 bg-linear-to-r from-purple-500 to-blue-500 shadow-lg">
   <div className="max-w-7xl mx-auto flex flex-col gap-6">
 
     
