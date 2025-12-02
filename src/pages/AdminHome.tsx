@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import EventCard from "../components/ui/EventCard";
-import type { Event } from "../types";
+import type { EventType } from "../types/EventType";
 
 const AdminHome: React.FC = () => {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<EventType[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,16 +36,7 @@ const AdminHome: React.FC = () => {
         {events.map(event => (
           <EventCard
             key={event.id || event._id}
-            id={event.id || event._id}
-            title={event.title}
-            date={event.date}
-            totalSeats={event.totalSeats}
-            seatsBooked={event.seatsBooked}
-            discount={event.discount}
-            description={event.description}
-            image={event.image || null}
-            price={event.price}
-            options={{ showHurryUp: true, sendReminder: false }}
+            event={event}
             onEdit={() => handleEdit(event.id || event._id)}
           />
         ))}

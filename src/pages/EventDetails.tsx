@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import type { Event } from "../types";
+import type { EventType } from "../types/EventType";
 
 const apiBase = import.meta.env.VITE_API_URL;
 
 const EventDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [event, setEvent] = useState<Event | null>(null);
+  const [event, setEvent] = useState<EventType | null>(null);
 
   useEffect(() => {
     if (!id) return;

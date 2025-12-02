@@ -1,20 +1,23 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, } from "react-router-dom";
 
 import type { EventType } from "../../types/EventType";
 import JoinEvent from "../rsvp/JoinEvent";
 
-const EventCard = ({ event }: { event: EventType }) => {
-  const location = useLocation();
-  const navigate = useNavigate();
+type EventCardProps = {
+  event: EventType;
+  onEdit?: (id: string) => void;
+};
 
+const EventCard: React.FC<EventCardProps> = ({ event, onEdit }) => {
+  const location = useLocation();
   const isAdmin = location.pathname.startsWith("/admin");
-  //const percentageBooked = (event.seatsBooked / event.totalSeats) * 100;
-  //const hurryUp = event.options?.showHurryUp && percentageBooked >= 80;
 
   const handleClick = () => {
-    //navigate(`/events/${id}`);
+    if (isAdmin && onEdit) {
+      onEdit(event._id); // call edit only for admin
+    }
+    // normal user navigation can go here
   };
-
   return (
     <div
       className="card bg-base-100 flex cursor-pointer flex-row items-start gap-4 p-4 shadow-md transition hover:shadow-lg"

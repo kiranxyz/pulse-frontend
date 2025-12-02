@@ -37,7 +37,7 @@ const AdminLayout: React.FC = () => {
         </nav>
       </aside>
 
-      <main className="flex-grow bg-gray-100 p-6">
+      <main className="grow bg-gray-100 p-6">
         <Outlet />
       </main>
     </div>
