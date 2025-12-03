@@ -4,6 +4,8 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { useState } from "react";
+import { useNavigate } from "react-router";
+import { toastify } from "react-toastify";
 
 import { useAuthContext } from "../../context/AuthProvider";
 
@@ -12,6 +14,8 @@ const apiBase = import.meta.env.VITE_API_URL;
 const CheckoutForm = ({ eventId }: { eventId: string }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
   const { me } = useAuthContext();
 
@@ -25,18 +29,14 @@ const CheckoutForm = ({ eventId }: { eventId: string }) => {
 
     const result = await stripe.confirmPayment({
       elements,
-      // confirmParams: {
-      //   return_url: window.location.href + "/thanks", // after success, send user to thanks page
-      // },
       redirect: "if_required",
     });
 
-    // TODO: Call registerEvent api to register user for the event only if payment is successful
+    // # Call registerEvent api to register user for the event only if payment is successful
     if (result.paymentIntent?.status === "succeeded") {
       // Payment succeeded
-      console.log("Payment succeeded:", result.paymentIntent);
       try {
-        console.log(`URL : ${apiBase}/api/registerParticipant`);
+        //console.log(`URL : ${apiBase}/api/registerParticipant`);
         const response = await fetch(`${apiBase}/api/registerParticipant`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -50,17 +50,33 @@ const CheckoutForm = ({ eventId }: { eventId: string }) => {
           throw new Error("Failed to register for the event");
         }
 
-        const data = await response.json();
-        console.log("Registration successful:", data);
+        const registerResponsedata = await response.json();
+
+        // # Send email with ticket
+        const res = await fetch(`${apiBase}/api/ticket/email`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: me?.id,
+            ticketCode: registerResponsedata.ticket.ticketCode,
+          }),
+        });
+        if (!res.ok) {
+          throw new Error("Failed to send ticket email");
+        }
+
+        const emailResponsedata = await response.json();
+        console.log("Email sent response:", emailResponsedata);
+        toastify.success("Payment successful and registered for the event!");
+        // # Redirect to thank you page with ticket code
+        navigate("/thanks", {
+          state: { ticketCode: registerResponsedata.ticket.ticketCode },
+        });
       } catch (error) {}
     }
 
     if (result.error) {
       alert(result.error.message);
-    } else {
-      //console.log("HREF : ", window.location.href);
-      alert("Payment Successful!");
-      window.location.href = "/thanks";
     }
 
     setLoading(false);
