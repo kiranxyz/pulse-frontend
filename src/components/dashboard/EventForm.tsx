@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const apiBase = import.meta.env.VITE_API_URL;
 
 interface Props {
-  event?: any; // pass existing event for edit
+  event?: any;
   mode: "create" | "edit";
 }
 
@@ -20,7 +20,7 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
   const [totalSeats, setTotalSeats] = useState(event?.totalSeats || 0);
   const [price, setPrice] = useState(event?.price || 0);
   const [discountFirstN, setDiscountFirstN] = useState(event?.discount?.firstN || 0);
-  const [discountPercent, setDiscountPercent] = useState(event?.discount?.percent || 0);
+  const [discountPercent,] = useState(event?.discount?.percent || 0);
   const [description, setDescription] = useState(event?.description || "");
   const [image, setImage] = useState(event?.image || "");
 

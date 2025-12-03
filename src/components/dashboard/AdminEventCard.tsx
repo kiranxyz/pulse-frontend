@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -21,11 +20,11 @@ const AdminEventCard: React.FC<Props> = ({
   return (
     <div className="card bg-base-100 shadow-md p-4 flex flex-row gap-4 items-start">
       
-      <div className="w-32 h-32 rounded overflow-hidden flex-shrink-0">
+      <div className="w-32 h-32 rounded overflow-hidden shrink-0">
         <img src={image} alt={title} className="w-full h-full object-cover" />
       </div>
 
-      <div className="flex flex-col flex-grow">
+      <div className="flex flex-col grow">
         <h2 className="text-xl font-bold">{title}</h2>
 
         <p className="text-sm text-gray-500">

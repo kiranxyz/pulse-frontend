@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import EventCard from "../components/ui/EventCard";
 
@@ -47,6 +47,7 @@ const HomePage = () => {
             key={event._id}
             id={event._id}
             title={event.title}
+            description={event.description}
             image={event.image}
             address={event.address}
             date={event.date}
@@ -55,7 +56,7 @@ const HomePage = () => {
             seatsBooked={event.seatsBooked || 0}
             discount={event.discount}
             price={event.price}
-            onAttend={handleAttend}
+            onAttend={() => handleAttend(event.id || event._id)}
           />
         ))
       )}

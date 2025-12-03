@@ -1,17 +1,22 @@
 import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate ,} from "react-router-dom";
+
 
 interface Props {
   id: string;
   title: string;
   date: string;
+  time?: string;
   totalSeats: number;
   seatsBooked: number;
   discount?: { firstN: number; percent: number };
   description: string;
+  address?: string;
   image: string;
   price: number;
   options?: { showHurryUp: boolean; sendReminder: boolean };
+  onEdit?: () => void;
+  onAttend?: () => void;
 }
 
 const EventCard: React.FC<Props> = ({
@@ -25,6 +30,7 @@ const EventCard: React.FC<Props> = ({
   image,
   price,
   options = { showHurryUp: false, sendReminder: false },
+  onEdit
 }) => {
   const location = useLocation();
   const navigate = useNavigate(); 
@@ -43,7 +49,7 @@ const EventCard: React.FC<Props> = ({
       onClick={handleClick}
     >
       {/* Event Image */}
-      <div className="w-32 h-32 rounded overflow-hidden flex-shrink-0">
+      <div className="w-32 h-32 rounded overflow-hidden shrink-0">
         {image ? (
           <img src={image} alt={title} className="w-full h-full object-cover" />
         ) : (
@@ -54,14 +60,14 @@ const EventCard: React.FC<Props> = ({
       </div>
 
       {/* Event Info */}
-      <div className="flex flex-col flex-grow">
+      <div className="flex flex-col grow">
         <h2 className="text-xl font-bold">{title}</h2>
         <p className="text-sm text-gray-500">{new Date(date).toLocaleDateString()}</p>
         <p className="mt-1 text-sm">Seats: {seatsBooked}/{totalSeats}</p>
         {hurryUp && <p className="text-red-600 text-sm font-semibold">Hurry up! Almost full.</p>}
-        {discount?.firstN > 0 && (
+        {discount?.firstN && discount.firstN > 0 && (
           <p className="text-green-600 text-sm">
-            {discount.percent}% OFF for first {discount.firstN} attendees
+            {discount?.percent}% OFF for first {discount.firstN} attendees
           </p>
         )}
         <p className="mt-2 text-sm line-clamp-3">{description}</p>
@@ -81,12 +87,15 @@ const EventCard: React.FC<Props> = ({
 
           {isAdmin && (
             <Link
-              to={`/admin/dashboard/edit/${id}`}
-              className="btn btn-outline btn-sm"
-              onClick={(e) => e.stopPropagation()} 
-            >
-              Edit
-            </Link>
+            to={`/admin/dashboard/edit/${id}`}
+            className="btn btn-outline btn-sm"
+            onClick={(e) => {
+            e.stopPropagation();
+            onEdit?.();
+            }}
+             >
+             Edit
+           </Link>
           )}
         </div>
       </div>
