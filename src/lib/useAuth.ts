@@ -37,6 +37,7 @@ export function useAuth() {
           ...(user as User),
           username: profileData.username,
           avatar: profileData.avatar,
+          role: profileData.role,
         };
       }
 
@@ -67,6 +68,7 @@ export function useAuth() {
     });
 
     const data = await res.json();
+
     if (!res.ok) throw new Error(data.error || "Login failed");
 
     await refetch();
@@ -131,7 +133,13 @@ export function useAuth() {
       }
 
       const data = await res.json();
-      setMe({ ...me, avatar: data.avatar, username: data.username });
+      console.log("Profile synced DATA :", data);
+      setMe({
+        ...me,
+        avatar: data.avatar,
+        username: data.username,
+        role: data.role,
+      });
       return data;
     } catch (err) {
       console.error("Sync profile failed:", err);
