@@ -46,7 +46,7 @@ const AdminLayout = () => {
                   <li key={link.path}>
                     <Link
                       to={link.path}
-                      className={`block rounded px-3 py-2 whitespace-nowrap hover:underline ${
+                      className={`block whitespace-nowrap rounded px-3 py-2 hover:underline ${
                         isActive ? "bg-gray-700 font-bold" : ""
                       }`}
                     >

@@ -8,7 +8,6 @@ import CheckInPage from "../components/dashboard/Checkin";
 import CreateEventPage from "../components/dashboard/CreateEvent";
 import EventDetailsPage from "../components/dashboard/EventDetails";
 import EditEventPage from "../components/dashboard/EventEdit";
-import EventsDashPage from "../components/dashboard/Events";
 import SettingsPage from "../components/dashboard/Settings";
 import UsersPage from "../components/dashboard/Users";
 import AppLayout from "../components/layout/AppLayout";

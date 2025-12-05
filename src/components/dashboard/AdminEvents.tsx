@@ -44,13 +44,13 @@ function EventTable({ events }: EventTableProps) {
               <td className="flex gap-2 px-4 py-2">
                 <Link
                   to={`/dashboard/events/${ev._id}`}
-                  className="btn btn-sm btn-outline transition-colors hover:bg-gray-100"
+                  className="btn btn-outline btn-sm transition-colors hover:bg-gray-100"
                 >
                   View
                 </Link>
                 <Link
                   to={`/dashboard/createevent/${ev._id}`}
-                  className="btn btn-sm btn-primary transition-all hover:brightness-110"
+                  className="btn btn-primary btn-sm transition-all hover:brightness-110"
                 >
                   Edit
                 </Link>

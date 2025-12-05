@@ -52,8 +52,6 @@ const Payment = () => {
 
   if (!clientSecret || !options) return <p>Loading payment form...</p>;
 
-  // TODO: Call payment gateway API
-
   return (
     <>
       <Elements stripe={stripePromise} options={options}>

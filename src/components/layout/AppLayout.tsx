@@ -1,9 +1,12 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link, Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useAuthContext } from "../../context/AuthProvider";
 
 export default function AppLayout() {
   const { me, loading, logout } = useAuthContext();
+
   const navigate = useNavigate();
 
   const handleLogout = async () => {
