@@ -40,9 +40,9 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      { path: "/payment", element: <Payment /> },
-      { path: "/thanks", element: <Thanks /> },
       { path: "/ticket", element: <Ticket /> },
+      { path: "/thanks", element: <Thanks /> },
+      { path: "/payment", element: <Payment /> },
     ],
   },
 
