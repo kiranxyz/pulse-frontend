@@ -7,9 +7,6 @@ import CreateEventPage from "../components/dashboard/CreateEvent";
 import EditEventPage from "../components/dashboard/EventEdit";
 // Layouts
 import AppLayout from "../components/layout/AppLayout";
-import Payment from "../components/rsvp/Payment";
-import Thanks from "../components/rsvp/Thanks";
-import Ticket from "../components/rsvp/Ticket";
 import ErrorPage from "../pages/ErrorPage";
 import EventDetails from "../pages/EventDetails";
 import EventsPage from "../pages/EventsPage";
@@ -38,9 +35,6 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      { path: "/payment", element: <Payment /> },
-      { path: "/thanks", element: <Thanks /> },
-      { path: "/ticket", element: <Ticket /> },
     ],
   },
 

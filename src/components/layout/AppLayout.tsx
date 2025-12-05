@@ -57,7 +57,7 @@ const AppLayout: React.FC = () => {
         </nav>
       </header>
 
-      <main className="flex-grow bg-gray-100 p-6">
+      <main className="grow bg-gray-100 p-6">
         <Outlet /> {/* Render child pages */}
       </main>
 
