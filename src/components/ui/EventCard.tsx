@@ -1,5 +1,4 @@
-import { useLocation, } from "react-router-dom";
-
+import { useLocation,Link } from "react-router-dom";
 import type { EventType } from "../../types/EventType";
 import JoinEvent from "../rsvp/JoinEvent";
 
@@ -19,13 +18,14 @@ const EventCard: React.FC<EventCardProps> = ({ event, onEdit }) => {
     // normal user navigation can go here
   };
   return (
-    <div
+    <Link to={`/events/${event._id}`}
+
       className="card bg-base-100 flex cursor-pointer flex-row items-start gap-4 p-4 shadow-md transition hover:shadow-lg"
       onClick={handleClick}
     >
       {/* Event Image */}
       <div className="h-32 w-32 shrink-0 overflow-hidden rounded">
-        {/* {event.image && event.image ? (
+        {event.image && event.image ? (
           <img
             src={event.image}
             alt={event.title}
@@ -35,7 +35,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, onEdit }) => {
           <div className="flex h-full w-full items-center justify-center bg-gray-200 text-gray-500">
             No Image
           </div>
-        )} */}
+        )} 
         <p>No Image</p>
       </div>
 
@@ -67,7 +67,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, onEdit }) => {
           <JoinEvent event={event} key={event._id} />
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

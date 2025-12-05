@@ -20,13 +20,36 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
   const [totalSeats, setTotalSeats] = useState(event?.totalSeats || 0);
   const [price, setPrice] = useState(event?.price || 0);
   const [discountFirstN, setDiscountFirstN] = useState(event?.discount?.firstN || 0);
-  const [discountPercent, ] = useState(event?.discount?.percent || 0);
+  const [discountPercent] = useState(event?.discount?.percent || 0);
   const [description, setDescription] = useState(event?.description || "");
   const [image, setImage] = useState(event?.image || "");
+  const [category, setCategory] = useState(event?.category || "");
 
   // Tickboxes
   const [showHurryUp, setShowHurryUp] = useState(event?.options?.showHurryUp ?? true);
   const [sendReminder, setSendReminder] = useState(event?.options?.sendReminder ?? true);
+
+  // Meetup-style categories
+  const categories = [
+    "Art & Culture",
+    "Career & Business",
+    "Community & Environment",
+    "Dancing",
+    "Games",
+    "Health & Wellbeing",
+    "Hobbies & Passions",
+    "Identity & Language",
+    "Music",
+    "Parents & Family",
+    "Pets & Animals",
+    "Religion & Spirituality",
+    "Science & Education",
+    "Social Activities",
+    "Sports & Fitness",
+    "Technology",
+    "Travel & Outdoor",
+    "Writing"
+  ];
 
   const handleSubmit = async () => {
     const payload = {
@@ -38,6 +61,7 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
       price,
       description,
       image,
+      category, // added category here
       discount: { firstN: discountFirstN, percent: discountPercent },
       options: { showHurryUp, sendReminder },
     };
@@ -61,7 +85,8 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        
+
+        {/* Image URL */}
         <div>
           <label className="label"><span className="label-text">Image URL</span></label>
           <input
@@ -73,7 +98,7 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
           />
         </div>
 
-        
+        {/* Title */}
         <div>
           <label className="label"><span className="label-text">Title</span></label>
           <input
@@ -85,7 +110,22 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
           />
         </div>
 
-        
+        {/* Category Dropdown */}
+        <div>
+          <label className="label"><span className="label-text">Category</span></label>
+          <select
+            className="input input-bordered w-full"
+            value={category}
+            onChange={e => setCategory(e.target.value)}
+          >
+            <option value="">Select Category</option>
+            {categories.map(cat => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Address */}
         <div>
           <label className="label"><span className="label-text">Address</span></label>
           <input
@@ -97,7 +137,7 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
           />
         </div>
 
-        
+        {/* Date */}
         <div>
           <label className="label"><span className="label-text">Date</span></label>
           <input
@@ -108,7 +148,7 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
           />
         </div>
 
-        
+        {/* Time */}
         <div>
           <label className="label"><span className="label-text">Time</span></label>
           <input
@@ -119,7 +159,7 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
           />
         </div>
 
-        
+        {/* Total Seats */}
         <div>
           <label className="label"><span className="label-text">Total Seats</span></label>
           <input
@@ -130,7 +170,7 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
           />
         </div>
 
-        
+        {/* Price */}
         <div>
           <label className="label"><span className="label-text">Price (€)</span></label>
           <input
@@ -141,7 +181,7 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
           />
         </div>
 
-        
+        {/* Discount */}
         <div className="col-span-full flex flex-col gap-2">
           <label className="cursor-pointer flex items-center gap-2">
             <input
@@ -166,7 +206,7 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
           )}
         </div>
 
-        
+        {/* Tickboxes */}
         <div className="col-span-full flex flex-col gap-2">
           <label className="cursor-pointer flex items-center gap-2">
             <input
@@ -188,7 +228,7 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
           </label>
         </div>
 
-        
+        {/* Description */}
         <div className="col-span-full">
           <label className="label"><span className="label-text">Description</span></label>
           <textarea
@@ -199,7 +239,7 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
           />
         </div>
 
-        
+        {/* Submit Button */}
         <div className="col-span-full">
           <button
             className={`btn ${mode === "create" ? "btn-success" : "btn-primary"} w-full`}
@@ -208,6 +248,7 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
             {mode === "create" ? "Create Event" : "Update Event"}
           </button>
         </div>
+
       </div>
     </div>
   );

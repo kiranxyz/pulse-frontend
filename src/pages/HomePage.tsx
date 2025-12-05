@@ -9,7 +9,7 @@ const apiBase = import.meta.env.VITE_API_URL;
 const HomePage = () => {
   const [events, setEvents] = useState<any[]>([]);
   const [filteredEvents, setFilteredEvents] = useState<any[]>([]);
-  const [showFilters, setShowFilters] = useState(false); // FIXED — moved inside component
+  const [showFilters, setShowFilters] = useState(false); 
 
   useEffect(() => {
     axios
@@ -59,7 +59,7 @@ const HomePage = () => {
     <input
       type="text"
       placeholder="Search events..."
-      className="w-full p-4 rounded-full shadow-md bg-green-300 text-gray-800 focus:outline-none"
+      className="w-full p-4 rounded-full shadow-md bg-black text-white "
       onFocus={() => setShowFilters(true)}
       onClick={() => setShowFilters(true)}
     />
@@ -76,19 +76,7 @@ const HomePage = () => {
   <EventSearchFilter onFilterChange={handleFilterChange} />
 </div>
 
-<div className="flex justify-center w-full pt-4">
-  <div className="flex text-white rounded-full gap-2">
-    {/* List Button */}
-    <button className="px-4 py-2 font-medium border-b-2 border-white">
-      List
-    </button>
 
-    {/* Map Button */}
-    <button className="px-4 py-2 font-medium text-gray-400 hover:text-white transition">
-      Map
-    </button>
-  </div>
-</div>
 
 
       {/* Events Grid */}
