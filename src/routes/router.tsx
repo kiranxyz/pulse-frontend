@@ -3,8 +3,10 @@ import { Navigate, createBrowserRouter } from "react-router-dom";
 import AdminLayout from "../components/admin/AdminLayout";
 import AdminOverview from "../components/admin/AdminOverview";
 import AdminEvents from "../components/dashboard/AdminEvents";
+import CheckInPage from "../components/dashboard/CheckInPage";
 import CreateEventPage from "../components/dashboard/CreateEvent";
 import EditEventPage from "../components/dashboard/EventEdit";
+import SettingsPage from "../components/dashboard/SettingsPage";
 // Layouts
 import AppLayout from "../components/layout/AppLayout";
 import Payment from "../components/rsvp/Payment";
@@ -56,6 +58,8 @@ export const router = createBrowserRouter([
           { path: "dashboard/events", element: <AdminEvents /> },
           { path: "dashboard/create", element: <CreateEventPage /> },
           { path: "dashboard/edit/:id", element: <EditEventPage /> },
+          { path: "dashboard/checkIn", element: <CheckInPage /> },
+          { path: "dashboard/settings", element: <SettingsPage /> },
         ],
       },
     ],

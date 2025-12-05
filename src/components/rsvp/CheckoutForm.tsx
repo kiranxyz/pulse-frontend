@@ -5,9 +5,10 @@ import {
 } from "@stripe/react-stripe-js";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { toastify } from "react-toastify";
+import { toast } from "react-toastify";
 
 import { useAuthContext } from "../../context/AuthProvider";
+import Notifications from "../notifications/Notifications";
 
 const apiBase = import.meta.env.VITE_API_URL;
 
@@ -36,7 +37,6 @@ const CheckoutForm = ({ eventId }: { eventId: string }) => {
     if (result.paymentIntent?.status === "succeeded") {
       // Payment succeeded
       try {
-        //console.log(`URL : ${apiBase}/api/registerParticipant`);
         const response = await fetch(`${apiBase}/api/registerParticipant`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -59,19 +59,43 @@ const CheckoutForm = ({ eventId }: { eventId: string }) => {
           body: JSON.stringify({
             userId: me?.id,
             ticketCode: registerResponsedata.ticket.ticketCode,
+            eventId: eventId,
           }),
         });
         if (!res.ok) {
           throw new Error("Failed to send ticket email");
         }
+        if (res.status === 200) {
+          const emailResponsedata = await res.json();
+          console.log(emailResponsedata.message);
+          // # if everything is successful then show notification and redirect to thank you page
 
-        const emailResponsedata = await response.json();
-        console.log("Email sent response:", emailResponsedata);
-        toastify.success("Payment successful and registered for the event!");
-        // # Redirect to thank you page with ticket code
-        navigate("/thanks", {
-          state: { ticketCode: registerResponsedata.ticket.ticketCode },
-        });
+          const notificationRes = await fetch(`${apiBase}/api/notifications`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              user: me?.id,
+              title: "Event Registration Successful",
+              message: `You have successfully registered for the event. Your ticket code is ${registerResponsedata.ticket.ticketCode}.`,
+              type: "registration",
+              isRead: false,
+            }),
+          });
+          if (!notificationRes.ok) {
+            throw new Error("Failed to create notification");
+          }
+          const notificationdata = await notificationRes.json();
+          console.log("Notification created:", notificationdata);
+          if (notificationdata.state == "success") {
+            <Notifications notifications={notificationdata.data} />;
+          }
+
+          toast.success("Payment successful and registered for the event!");
+          // # Redirect to thank you page with ticket code
+          navigate("/thanks", {
+            state: { ticketCode: registerResponsedata.ticket.ticketCode },
+          });
+        }
       } catch (error) {}
     }
 
