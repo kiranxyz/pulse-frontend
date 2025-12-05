@@ -12,14 +12,14 @@ const LOCATIONS = [
   "Remote",
 ];
 
-function passwordStrength(password: string) {
-  let score = 0;
-  if (password.length >= 8) score++;
-  if (/[A-Z]/.test(password)) score++;
-  if (/[a-z]/.test(password)) score++;
-  if (/[0-9]/.test(password)) score++;
-  if (/[^A-Za-z0-9]/.test(password)) score++;
-  return score;
+function passwordStrength(pwd: string) {
+  let s = 0;
+  if (pwd.length >= 8) s++;
+  if (/[A-Z]/.test(pwd)) s++;
+  if (/[a-z]/.test(pwd)) s++;
+  if (/[0-9]/.test(pwd)) s++;
+  if (/[^A-Za-z0-9]/.test(pwd)) s++;
+  return s;
 }
 
 export default function RegisterPage() {
@@ -38,39 +38,42 @@ export default function RegisterPage() {
   const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [age] = useState("");
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const pwdScore = passwordStrength(password);
+
   const canSubmit =
-    Boolean(username.trim()) &&
-    emailValid &&
-    password.length >= 6 &&
-    ageConfirmed;
+    username.trim() && emailValid && password.length >= 6 && ageConfirmed;
 
-  async function handleRegister(e: React.FormEvent) {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-
     if (!canSubmit) return;
 
     setLoading(true);
+    setError(null);
+
     try {
-      await register({ email, password, username, title, location, age, role });
+      await register({
+        email,
+        password,
+        username,
+        title,
+        location,
+        age: "",
+        role,
+      });
       navigate("/");
-    } catch (err: unknown) {
-      console.error("Registration failed:", err);
-      setError(err instanceof Error ? err.message : String(err));
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setError(msg);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <main className="mx-auto max-w-md p-6">
-      <header>
-        <h1 className="mb-4 text-2xl font-bold">Create Your Account</h1>
-      </header>
+      <h1 className="mb-4 text-2xl font-bold">Create Your Account</h1>
 
       {error && (
         <div className="mb-4 rounded-md bg-red-50 p-2 text-sm text-red-700">
@@ -83,12 +86,11 @@ export default function RegisterPage() {
           <legend className="sr-only">Registration Form</legend>
 
           <div>
-            <label htmlFor="title" className="mb-1 block font-medium">
+            <label className="mb-1 block font-medium" htmlFor="title">
               Title (Optional)
             </label>
             <input
               id="title"
-              type="text"
               className="input w-full rounded-lg"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -96,12 +98,11 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label htmlFor="username" className="mb-1 block font-medium">
+            <label className="mb-1 block font-medium" htmlFor="username">
               Username
             </label>
             <input
               id="username"
-              type="text"
               className="input w-full rounded-lg"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -109,9 +110,8 @@ export default function RegisterPage() {
             />
           </div>
 
-          {/* Location */}
           <div>
-            <label htmlFor="location" className="mb-1 block font-medium">
+            <label className="mb-1 block font-medium" htmlFor="location">
               Location
             </label>
             <input
@@ -130,7 +130,7 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label htmlFor="email" className="mb-1 block font-medium">
+            <label className="mb-1 block font-medium" htmlFor="email">
               Email Address
             </label>
             <input
@@ -141,23 +141,23 @@ export default function RegisterPage() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
+
             <p className="mt-1 text-xs">
-              {email ? (
-                emailValid ? (
-                  <span className="text-green-600">Valid email</span>
-                ) : (
-                  <span className="text-red-600">Invalid email</span>
-                )
+              {!email ? (
+                "Enter your email"
+              ) : emailValid ? (
+                <span className="text-green-600">Valid email</span>
               ) : (
-                <span className="text-gray-500">Enter your email</span>
+                <span className="text-red-600">Invalid email</span>
               )}
             </p>
           </div>
 
           <div>
-            <label htmlFor="password" className="mb-1 block font-medium">
+            <label className="mb-1 block font-medium" htmlFor="password">
               Password
             </label>
+
             <div className="relative">
               <input
                 id="password"
@@ -167,33 +167,43 @@ export default function RegisterPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+
               <button
                 type="button"
-                className="absolute top-1/2 right-2 -translate-y-1/2 text-sm opacity-80"
                 onClick={() => setShowPassword(!showPassword)}
+                className="absolute top-1/2 right-2 -translate-y-1/2 text-sm opacity-80"
               >
                 {showPassword ? "HIDE" : "SHOW"}
               </button>
             </div>
+
             <div className="mt-1 h-2 w-full overflow-hidden rounded-lg bg-gray-200">
               <div
-                className={`h-full transition-all duration-200 ${pwdScore >= 4 ? "bg-green-500" : pwdScore >= 2 ? "bg-yellow-400" : "bg-red-500"}`}
+                className={
+                  "h-full transition-all duration-200 " +
+                  (pwdScore >= 4
+                    ? "bg-green-500"
+                    : pwdScore >= 2
+                      ? "bg-yellow-400"
+                      : "bg-red-500")
+                }
                 style={{ width: `${(pwdScore / 5) * 100}%` }}
               />
             </div>
+
             <p className="mt-1 text-xs">
-              {password
-                ? pwdScore >= 4
+              {!password
+                ? "—"
+                : pwdScore >= 4
                   ? "Strong"
                   : pwdScore >= 2
                     ? "Medium"
-                    : "Weak"
-                : "—"}
+                    : "Weak"}
             </p>
           </div>
 
           <div>
-            <label htmlFor="role" className="mb-1 block font-medium">
+            <label className="mb-1 block font-medium" htmlFor="role">
               Register As
             </label>
             <select
@@ -213,11 +223,10 @@ export default function RegisterPage() {
               <option value="participant">Participant</option>
               <option value="organizer">Organizer</option>
               <option value="ticketchecker">Ticket Checker</option>
-              <option value="admin">Admin</option>
             </select>
           </div>
 
-          <div className="bg-base-200 mt-2 rounded-lg border p-3">
+          <div className="bg-base-200 rounded-lg border p-3">
             <label className="flex cursor-pointer items-center gap-3">
               <input
                 type="checkbox"
@@ -233,16 +242,15 @@ export default function RegisterPage() {
           </div>
         </fieldset>
 
-        <footer className="mt-6">
-          <button
-            type="submit"
-            className={`btn btn-primary w-full ${loading ? "loading" : ""}`}
-            disabled={!canSubmit || loading}
-          >
-            {loading ? "Registering..." : "Register"}
-          </button>
-        </footer>
+        <button
+          type="submit"
+          disabled={!canSubmit || loading}
+          className={`btn btn-primary mt-6 w-full ${loading ? "loading" : ""}`}
+        >
+          {loading ? "Registering..." : "Register"}
+        </button>
       </form>
+
       <p className="mt-4 text-center text-sm">
         Already have an account?{" "}
         <a href="/login" className="text-blue-500 underline">

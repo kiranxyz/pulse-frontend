@@ -1,12 +1,11 @@
-import React from "react";
-import { Link, Outlet } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 
 import { useAuthContext } from "../../context/AuthProvider";
 
-const AppLayout: React.FC = () => {
+export default function AppLayout() {
   const { me, loading, logout } = useAuthContext();
   const navigate = useNavigate();
+
   const handleLogout = async () => {
     try {
       await logout({ email: me?.email || "", password: "" });
@@ -15,57 +14,64 @@ const AppLayout: React.FC = () => {
       console.error("Logout failed:", err);
     }
   };
+
+  const navItems = [
+    {
+      label: "Home",
+      path: "/",
+      roles: ["admin", "organizer", "ticketchecker", "participant"],
+    },
+    {
+      label: "Events",
+      path: "/events",
+      roles: ["admin", "organizer", "participant"],
+    },
+    { label: "Dashboard", path: "/dashboard", roles: ["admin", "organizer"] },
+    {
+      label: "Profile",
+      path: "/profile",
+      roles: ["admin", "organizer", "ticketchecker", "participant"],
+    },
+    { label: "Check In", path: "/checkin", roles: ["admin", "ticketchecker"] },
+    { label: "Register", path: "/register", roles: ["guest"] },
+    { label: "Login", path: "/login", roles: ["guest"] },
+  ];
+
+  const role = me?.role || "guest";
+  const visibleNav = navItems.filter((item) => item.roles.includes(role));
+
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="flex items-center justify-between bg-gray-800 p-4 text-white">
-        <h1 className="text-xl font-bold">Pulse App</h1>
-        <nav className="flex gap-4">
-          <Link to="/" className="hover:underline">
-            Home
-          </Link>
-
+      <header className="flex flex-col items-center justify-between gap-2 bg-gray-800 p-4 text-white sm:flex-row">
+        <h1 className="text-xl font-bold">Pulse</h1>
+        <nav className="flex flex-wrap gap-4">
           {loading ? (
             <span>Loading...</span>
-          ) : me ? (
-            <>
-              <Link to="/profile" className="hover:underline">
-                Profile
-              </Link>
-              <Link to="/events" className="hover:underline">
-                Events
-              </Link>
-              <Link to="/admin/dashboard" className="hover:underline">
-                Dashboard
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="bg-transparent hover:underline"
-              >
-                Logout
-              </button>
-            </>
           ) : (
-            <>
-              <Link to="/register" className="hover:underline">
-                Register
+            visibleNav.map((item) => (
+              <Link key={item.path} to={item.path} className="hover:underline">
+                {item.label}
               </Link>
-              <Link to="/login" className="hover:underline">
-                Login
-              </Link>
-            </>
+            ))
+          )}
+          {role !== "guest" && (
+            <button
+              onClick={handleLogout}
+              className="bg-transparent hover:underline"
+            >
+              Logout
+            </button>
           )}
         </nav>
       </header>
 
       <main className="flex-grow bg-gray-100 p-6">
-        <Outlet /> {/* Render child pages */}
+        <Outlet />
       </main>
 
       <footer className="bg-gray-800 p-4 text-center text-white">
-        &copy; {new Date().getFullYear()} Pulse App
+        &copy; {new Date().getFullYear()} Pulse
       </footer>
     </div>
   );
-};
-
-export default AppLayout;
+}

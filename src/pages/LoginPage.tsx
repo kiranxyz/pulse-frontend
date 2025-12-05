@@ -15,7 +15,7 @@ export default function LoginPage() {
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const passwordValid = password.length >= 6;
-  const canSubmit = emailValid && passwordValid;
+  const canSubmit = emailValid && passwordValid && !loading;
 
   const handleLogin = async (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -27,8 +27,10 @@ export default function LoginPage() {
     try {
       await login({ email, password });
       navigate("/");
-    } catch (err: unknown) {
-      setErrorMsg(err instanceof Error ? err.message : String(err));
+    } catch (err) {
+      const msg =
+        err instanceof Error ? err.message : "Login failed. Please try again.";
+      setErrorMsg(msg);
     } finally {
       setLoading(false);
     }
@@ -59,9 +61,8 @@ export default function LoginPage() {
                   : "border-red-500"
                 : "border-gray-300"
             }`}
-            placeholder="Enter your email"
             value={email}
-            required
+            placeholder="Enter your email"
             onChange={(e) => setEmail(e.target.value)}
           />
           {email && !emailValid && (
@@ -84,16 +85,14 @@ export default function LoginPage() {
                     : "border-red-500"
                   : "border-gray-300"
               }`}
-              placeholder="Enter your password"
               value={password}
-              required
+              placeholder="Enter your password"
               onChange={(e) => setPassword(e.target.value)}
             />
             <button
               type="button"
-              className="absolute top-1/2 right-2 -translate-y-1/2 text-sm opacity-80"
-              aria-label={showPassword ? "Hide password" : "Show password"}
               onClick={() => setShowPassword(!showPassword)}
+              className="absolute top-1/2 right-2 -translate-y-1/2 text-xs opacity-75"
             >
               {showPassword ? "HIDE" : "SHOW"}
             </button>
@@ -107,8 +106,10 @@ export default function LoginPage() {
 
         <button
           type="submit"
-          className={`btn btn-primary w-full rounded-lg ${loading ? "loading" : ""}`}
-          disabled={loading || !canSubmit}
+          disabled={!canSubmit}
+          className={`btn btn-primary w-full rounded-lg ${
+            loading ? "loading" : ""
+          }`}
         >
           {loading ? "Logging in..." : "Login"}
         </button>

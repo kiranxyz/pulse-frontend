@@ -4,38 +4,32 @@ import { useAuthContext } from "../context/AuthProvider";
 
 export default function ProfilePage() {
   const { me, loading, refetch } = useAuthContext();
+  const baseUrl = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
-  const [username, setUsername] = useState(me?.username || "");
+  const [username, setUsername] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [avatar, setAvatar] = useState<File | null>(null);
-  const [previewAvatar, setPreviewAvatar] = useState<string>(
-    me?.avatar
-      ? `${import.meta.env.VITE_PULSE_BACKEND_API_URL}/uploads/${me.avatar}`
-      : "",
-  );
+  const [previewAvatar, setPreviewAvatar] = useState("");
   const [status, setStatus] = useState("");
 
   const passwordStrength = (pwd: string) => {
-    let score = 0;
-    if (pwd.length >= 8) score++;
-    if (/[A-Z]/.test(pwd)) score++;
-    if (/[a-z]/.test(pwd)) score++;
-    if (/[0-9]/.test(pwd)) score++;
-    if (/[^A-Za-z0-9]/.test(pwd)) score++;
-    return score;
+    let s = 0;
+    if (pwd.length >= 8) s++;
+    if (/[A-Z]/.test(pwd)) s++;
+    if (/[a-z]/.test(pwd)) s++;
+    if (/[0-9]/.test(pwd)) s++;
+    if (/[^A-Za-z0-9]/.test(pwd)) s++;
+    return s;
   };
 
   const pwdStrong = passwordStrength(newPassword) >= 4;
 
-  // Keep preview avatar in sync
   useEffect(() => {
-    if (me?.avatar) {
-      setPreviewAvatar(
-        `${import.meta.env.VITE_PULSE_BACKEND_API_URL}/uploads/${me.avatar}`,
-      );
-    }
-    setUsername(me?.username || "");
+    if (!me) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setUsername(me.username || "");
+    if (me.avatar) setPreviewAvatar(`${baseUrl}/uploads/${me.avatar}`);
   }, [me]);
 
   if (loading) return <p>Loading profile...</p>;
@@ -45,43 +39,41 @@ export default function ProfilePage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (previewAvatar && previewAvatar.startsWith("blob:")) {
-      URL.revokeObjectURL(previewAvatar);
-    }
+    if (previewAvatar.startsWith("blob:")) URL.revokeObjectURL(previewAvatar);
 
     setAvatar(file);
     setPreviewAvatar(URL.createObjectURL(file));
   };
 
   const handleSaveProfile = async () => {
-    if (newPassword && !pwdStrong)
-      return setStatus(
-        "New password is weak. Minimum 8 chars, include uppercase, lowercase, number & symbol.",
+    if (newPassword && !pwdStrong) {
+      setStatus(
+        "New password is weak. Minimum 8 chars with uppercase, lowercase, number and symbol.",
       );
+      return;
+    }
+
+    if (newPassword && !currentPassword) {
+      setStatus("Current password is required to change password");
+      return;
+    }
 
     setStatus("Saving profile...");
 
     try {
       const formData = new FormData();
       formData.append("username", username);
-
       if (newPassword) {
-        if (!currentPassword)
-          return setStatus("Current password is required to change password");
         formData.append("password", newPassword);
         formData.append("currentPassword", currentPassword);
       }
-
       if (avatar) formData.append("avatar", avatar);
 
-      const res = await fetch(
-        `${import.meta.env.VITE_PULSE_BACKEND_API_URL}/api/profile`,
-        {
-          method: "PUT",
-          credentials: "include",
-          body: formData,
-        },
-      );
+      const res = await fetch(`${baseUrl}/api/profile`, {
+        method: "PUT",
+        credentials: "include",
+        body: formData,
+      });
 
       if (!res.ok) {
         const text = await res.text();
@@ -89,21 +81,18 @@ export default function ProfilePage() {
         return;
       }
 
-      const updated = await res.json();
+      const data = await res.json();
 
-      if (updated.avatar) {
-        setPreviewAvatar(
-          `${import.meta.env.VITE_PULSE_BACKEND_API_URL}/uploads/${updated.avatar}`,
-        );
-      }
+      if (data.avatar) setPreviewAvatar(`${baseUrl}/uploads/${data.avatar}`);
 
       setStatus("Profile updated!");
       setAvatar(null);
       setCurrentPassword("");
       setNewPassword("");
       await refetch();
-    } catch (err: unknown) {
-      setStatus(`Error: ${err instanceof Error ? err.message : String(err)}`);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setStatus(`Error: ${msg}`);
     }
   };
 
@@ -112,16 +101,14 @@ export default function ProfilePage() {
       <h1 className="mb-6 text-2xl font-bold">Profile</h1>
 
       {previewAvatar && (
-        <div className="mb-4">
-          <img
-            src={previewAvatar}
-            alt="Avatar"
-            className="h-20 w-20 rounded-full object-cover"
-          />
-        </div>
+        <img
+          src={previewAvatar}
+          alt="Avatar"
+          className="mb-4 h-20 w-20 rounded-full object-cover"
+        />
       )}
 
-      <section className="mb-4">
+      <div className="mb-4">
         <label className="mb-1 block font-medium">Username</label>
         <input
           type="text"
@@ -129,9 +116,9 @@ export default function ProfilePage() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-      </section>
+      </div>
 
-      <section className="mb-4">
+      <div className="mb-4">
         <label className="mb-1 block font-medium">Current Password</label>
         <input
           type="password"
@@ -140,9 +127,9 @@ export default function ProfilePage() {
           value={currentPassword}
           onChange={(e) => setCurrentPassword(e.target.value)}
         />
-      </section>
+      </div>
 
-      <section className="mb-4">
+      <div className="mb-4">
         <label className="mb-1 block font-medium">New Password</label>
         <input
           type="password"
@@ -153,21 +140,19 @@ export default function ProfilePage() {
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
         />
-      </section>
+      </div>
 
-      <section className="mb-4">
+      <div className="mb-4">
         <label className="mb-1 block font-medium">Avatar</label>
         <input type="file" onChange={handleAvatarChange} />
-      </section>
-
-      <div className="flex gap-4">
-        <button
-          className="btn btn-primary mt-4 rounded-lg"
-          onClick={handleSaveProfile}
-        >
-          Save Profile
-        </button>
       </div>
+
+      <button
+        className="btn btn-primary mt-4 rounded-lg"
+        onClick={handleSaveProfile}
+      >
+        Save Profile
+      </button>
 
       {status && <p className="mt-3 text-sm text-gray-600">{status}</p>}
     </main>

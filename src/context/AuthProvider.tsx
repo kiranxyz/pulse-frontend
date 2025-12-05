@@ -1,6 +1,6 @@
 import { type ReactNode, createContext, useContext } from "react";
 
-import { type User, useAuth } from "../lib/useAuth.ts";
+import { type User, useAuth } from "../lib/useAuth";
 
 export interface AuthContextValue {
   me: User | null;
@@ -25,7 +25,6 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const auth = useAuth();
-
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 }
 

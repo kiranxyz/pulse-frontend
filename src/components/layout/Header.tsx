@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { useAuth } from "../../lib/useAuth.ts";
-import { useSession } from "../../lib/useAuthSession";
+import { useAuthContext } from "../../context/AuthProvider";
 
 interface HeaderProps {
   openLoginModal: () => void;
@@ -12,89 +11,94 @@ export default function Header({
   openLoginModal,
   openRegisterModal,
 }: HeaderProps) {
-  const { data: session, isPending } = useSession();
-  const { me } = useAuth();
+  const { me, logout } = useAuthContext();
 
   const avatarSrc = me?.avatar
     ? `${import.meta.env.VITE_PULSE_BACKEND_API_URL}/uploads/${me.avatar}`
     : "";
 
+  const role = me?.role?.toLowerCase() || "guest";
+
   const handleLogout = async () => {
-    await fetch(`${import.meta.env.VITE_PULSE_BACKEND_API_URL}/auth/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
-    window.location.reload();
+    await logout({ email: me?.email || "", password: "" });
+    window.location.href = "/";
   };
+
+  const navItems = [
+    {
+      label: "Home",
+      path: "/",
+      roles: ["admin", "organizer", "ticketchecker", "participant", "guest"],
+    },
+    {
+      label: "Events",
+      path: "/events",
+      roles: ["admin", "organizer", "participant", "guest"],
+    },
+    { label: "Dashboard", path: "/dashboard", roles: ["admin", "organizer"] },
+    { label: "Check In", path: "/checkin", roles: ["ticketchecker", "admin"] },
+    {
+      label: "Profile",
+      path: "/profile",
+      roles: ["admin", "organizer", "ticketchecker", "participant"],
+    },
+    { label: "Register", path: "/register", roles: ["guest"] },
+    { label: "Login", path: "/login", roles: ["guest"] },
+  ];
+
+  const visibleNav = navItems.filter((item) => item.roles.includes(role));
 
   return (
     <header className="bg-base-100 border-b">
-      <nav
-        className="mx-auto flex w-full max-w-6xl items-center justify-between p-4"
-        aria-label="Main navigation"
-      >
-        <a
-          href="/"
+      <nav className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-2 p-4">
+        <Link
+          to="/"
           className="text-xl font-bold text-indigo-700 hover:opacity-80"
-          aria-label="Pulse homepage"
         >
           Pulse
-        </a>
+        </Link>
 
-        {isPending && (
-          <div
-            className="loading loading-spinner loading-sm text-primary"
-            role="status"
-          >
-            <span className="sr-only">Loading session…</span>
-          </div>
-        )}
-
-        {session?.user ? (
-          <div className="flex items-center gap-4">
-            {avatarSrc && (
-              <img
-                src={avatarSrc}
-                alt="User Avatar"
-                className="h-10 w-10 rounded-full object-cover"
-              />
-            )}
-            <span className="text-base-content/80 text-sm">
-              Welcome, <strong>{session.user.email}</strong>
-            </span>
+        <div className="flex flex-wrap items-center gap-2">
+          {visibleNav.map((item) => (
             <Link
-              to="/profile"
-              className="btn btn-outline btn-sm"
-              aria-label="Go to profile"
+              key={item.path}
+              to={item.path}
+              className="btn btn-ghost btn-sm"
             >
-              Profile
+              {item.label}
             </Link>
-            <button
-              className="btn btn-error btn-sm"
-              onClick={handleLogout}
-              aria-label="Log out"
-            >
-              Logout
-            </button>
-          </div>
-        ) : (
-          <div className="flex items-center gap-3">
-            <button
-              className="btn btn-outline btn-sm"
-              onClick={openRegisterModal}
-              aria-label="Open registration modal"
-            >
-              Register
-            </button>
-            <button
-              className="btn btn-primary btn-sm"
-              onClick={openLoginModal}
-              aria-label="Open login modal"
-            >
-              Login
-            </button>
-          </div>
-        )}
+          ))}
+
+          {me ? (
+            <>
+              {avatarSrc && (
+                <img
+                  src={avatarSrc}
+                  alt={`${me.username || "User"} Avatar`}
+                  className="h-10 w-10 rounded-full object-cover"
+                />
+              )}
+              <button className="btn btn-error btn-sm" onClick={handleLogout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className="btn btn-outline btn-sm"
+                onClick={openRegisterModal}
+              >
+                Register
+              </button>
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={openLoginModal}
+              >
+                Login
+              </button>
+            </>
+          )}
+        </div>
       </nav>
     </header>
   );

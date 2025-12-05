@@ -16,16 +16,15 @@ const AdminEventCard: React.FC<Props> = ({
   date,
   totalSeats,
   seatsBooked,
-  image
+  image,
 }) => {
   return (
-    <div className="card bg-base-100 shadow-md p-4 flex flex-row gap-4 items-start">
-      
-      <div className="w-32 h-32 rounded overflow-hidden flex-shrink-0">
-        <img src={image} alt={title} className="w-full h-full object-cover" />
+    <div className="card bg-base-100 flex flex-row items-start gap-4 p-4 shadow-md">
+      <div className="h-32 w-32 flex-shrink-0 overflow-hidden rounded">
+        <img src={image} alt={title} className="h-full w-full object-cover" />
       </div>
 
-      <div className="flex flex-col flex-grow">
+      <div className="flex flex-grow flex-col">
         <h2 className="text-xl font-bold">{title}</h2>
 
         <p className="text-sm text-gray-500">

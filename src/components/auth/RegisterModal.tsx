@@ -1,10 +1,22 @@
-import { useEffect, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 
 import { useAuth } from "../../lib/useAuth";
 
 interface RegisterModalProps {
   close: () => void;
   openLogin: () => void;
+}
+
+interface InputProps {
+  id: string;
+  type?: string;
+  value: string;
+  placeholder?: string;
+  required?: boolean;
+  valid?: boolean;
+  list?: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  children?: React.ReactNode;
 }
 
 const LOCATIONS = [
@@ -23,7 +35,41 @@ function passwordStrength(password: string) {
   if (/[a-z]/.test(password)) score++;
   if (/[0-9]/.test(password)) score++;
   if (/[^A-Za-z0-9]/.test(password)) score++;
-  return score; // 0..5
+  return score;
+}
+function Input({
+  id,
+  type = "text",
+  value,
+  placeholder,
+  required,
+  valid,
+  list,
+  onChange,
+  children,
+}: InputProps) {
+  const borderClass = value
+    ? valid === undefined
+      ? "border-gray-300"
+      : valid
+        ? "border-green-500"
+        : "border-red-500"
+    : "border-gray-300";
+  return (
+    <div className="relative">
+      <input
+        id={id}
+        type={type}
+        value={value}
+        placeholder={placeholder}
+        required={required}
+        list={list}
+        onChange={onChange}
+        className={`w-full rounded-lg border px-3 py-2 text-sm ${borderClass} bg-white/20`}
+      />
+      {children}
+    </div>
+  );
 }
 
 export default function RegisterModal({
@@ -31,7 +77,6 @@ export default function RegisterModal({
   openLogin,
 }: RegisterModalProps) {
   const { register } = useAuth();
-
   const [title, setTitle] = useState("");
   const [username, setUsername] = useState("");
   const [location, setLocation] = useState("");
@@ -41,31 +86,33 @@ export default function RegisterModal({
     "participant" | "organizer" | "ticketchecker" | "admin"
   >("participant");
   const [ageConfirmed, setAgeConfirmed] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [age] = useState("");
-
   const [mounted, setMounted] = useState(false);
+
   useEffect(() => setMounted(true), []);
 
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const pwdScore = passwordStrength(password);
   const canSubmit =
-    Boolean(username.trim()) &&
-    emailValid &&
-    password.length >= 6 &&
-    ageConfirmed;
+    username.trim() && emailValid && password.length >= 6 && ageConfirmed;
 
-  async function handleSubmit(e?: React.FormEvent) {
+  async function handleSubmit(e?: FormEvent) {
     e?.preventDefault();
-    setError(null);
     if (!canSubmit) return;
+    setError(null);
     setLoading(true);
-
     try {
-      await register({ email, password, username, title, location, age, role });
+      await register({
+        email,
+        password,
+        username,
+        title,
+        location,
+        age: "",
+        role,
+      });
       close();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err));
@@ -78,7 +125,6 @@ export default function RegisterModal({
     <dialog
       open
       className="fixed inset-0 z-50 flex items-center justify-center px-4"
-      aria-labelledby="register-modal-title"
     >
       <div
         className={`w-full max-w-md transform rounded-xl border border-white/20 bg-white/30 p-6 shadow-2xl backdrop-blur-lg transition-all duration-350 ease-out ${
@@ -86,9 +132,7 @@ export default function RegisterModal({
         }`}
       >
         <header className="mb-4 flex items-center justify-between">
-          <h3 id="register-modal-title" className="text-lg font-semibold">
-            Create account
-          </h3>
+          <h3 className="text-lg font-semibold">Create account</h3>
           <button
             onClick={close}
             className="text-sm opacity-80 hover:opacity-100"
@@ -109,11 +153,10 @@ export default function RegisterModal({
             <label htmlFor="title" className="mb-1 block text-sm font-medium">
               Title (Optional)
             </label>
-            <input
+            <Input
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full rounded-lg border border-white/20 bg-white/20 px-3 py-2 text-sm"
               placeholder="e.g. Developer, Student"
             />
           </div>
@@ -125,12 +168,11 @@ export default function RegisterModal({
             >
               Username
             </label>
-            <input
+            <Input
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="w-full rounded-lg border border-white/20 bg-white/20 px-3 py-2 text-sm"
               placeholder="Full name"
             />
           </div>
@@ -142,12 +184,11 @@ export default function RegisterModal({
             >
               Location
             </label>
-            <input
+            <Input
               id="location"
-              list="locations"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              className="w-full rounded-lg border border-white/20 bg-white/20 px-3 py-2 text-sm"
+              list="locations"
               placeholder="City, Country or choose..."
             />
             <datalist id="locations">
@@ -161,14 +202,14 @@ export default function RegisterModal({
             <label htmlFor="email" className="mb-1 block text-sm font-medium">
               Email address
             </label>
-            <input
+            <Input
               id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full rounded-lg border border-white/20 bg-white/20 px-3 py-2 text-sm"
               placeholder="you@example.com"
+              valid={email ? emailValid : undefined}
             />
             <p className="mt-1 text-xs">
               {email ? (
@@ -190,25 +231,22 @@ export default function RegisterModal({
             >
               Password
             </label>
-            <div className="relative">
-              <input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="w-full rounded-lg border border-white/20 bg-white/20 px-3 py-2 pr-10 text-sm"
-                placeholder="Choose a strong password"
-              />
+            <Input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="Choose a strong password"
+            >
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute top-1/2 right-2 -translate-y-1/2 text-sm opacity-80"
-                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? "HIDE" : "SHOW"}
               </button>
-            </div>
+            </Input>
             <div className="mt-2 flex items-center gap-2">
               <div className="h-2 flex-1 overflow-hidden rounded bg-white/10">
                 <div
@@ -235,21 +273,12 @@ export default function RegisterModal({
             <select
               id="role"
               value={role}
-              onChange={(e) =>
-                setRole(
-                  e.target.value as
-                    | "participant"
-                    | "organizer"
-                    | "ticketchecker"
-                    | "admin",
-                )
-              }
+              onChange={(e) => setRole(e.target.value as typeof role)}
               className="w-full rounded-lg border border-white/20 bg-white/20 px-3 py-2 text-sm"
             >
               <option value="participant">Participant</option>
               <option value="organizer">Organizer</option>
-              <option value="ticketchecker">Participant</option>
-              <option value="admin">Participant</option>
+              <option value="ticketchecker">Ticketchecker</option>
             </select>
           </div>
 
@@ -268,15 +297,13 @@ export default function RegisterModal({
             </label>
           </div>
 
-          <div className="pt-2">
-            <button
-              type="submit"
-              disabled={!canSubmit || loading}
-              className={`w-full rounded-lg px-4 py-2 text-sm font-semibold transition ${canSubmit ? "bg-indigo-600 text-white hover:bg-indigo-700" : "cursor-not-allowed bg-gray-300 text-gray-700"}`}
-            >
-              {loading ? "Creating..." : "Register"}
-            </button>
-          </div>
+          <button
+            type="submit"
+            disabled={!canSubmit || loading}
+            className={`w-full rounded-lg px-4 py-2 text-sm font-semibold transition ${canSubmit ? "bg-indigo-600 text-white hover:bg-indigo-700" : "cursor-not-allowed bg-gray-300 text-gray-700"}`}
+          >
+            {loading ? "Creating..." : "Register"}
+          </button>
         </form>
 
         <footer className="mt-4 text-center text-sm">
