@@ -1,5 +1,7 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
-
+import Thanks from "../components/rsvp/Thanks";
+import Ticket from "../components/rsvp/Ticket";
+import Payment from "../components/rsvp/Payment";
 import AdminLayout from "../components/admin/AdminLayout";
 import AdminOverview from "../components/admin/AdminOverview";
 import AdminEvents from "../components/dashboard/AdminEvents";
