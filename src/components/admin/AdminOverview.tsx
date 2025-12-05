@@ -1,5 +1,3 @@
-import React from "react";
-
 const AdminOverview: React.FC = () => {
   return (
     <div>
