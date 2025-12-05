@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const apiBase = import.meta.env.VITE_API_URL;
 
 interface Props {
-  event?: any; // pass existing event for edit
+  event?: any;
   mode: "create" | "edit";
 }
 

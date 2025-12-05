@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import EventCard from "../components/ui/EventCard";
-import type { Event } from "../types";
+import type { EventType } from "../types/EventType";
 
 const AdminHome: React.FC = () => {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<EventType[]>([]);
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:9000";
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/events")
+    fetch(`${API_URL}/events`)
       .then(res => res.json())
       .then(data => setEvents(data))
       .catch(console.error);
@@ -43,7 +44,7 @@ const AdminHome: React.FC = () => {
             seatsBooked={event.seatsBooked}
             discount={event.discount}
             description={event.description}
-            image={event.image || null}
+            image={event.image ?? null}
             price={event.price}
             options={{ showHurryUp: true, sendReminder: false }}
             onEdit={() => handleEdit(event.id || event._id)}

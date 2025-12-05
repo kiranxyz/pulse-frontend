@@ -9,9 +9,6 @@ import EditEventPage from "../components/dashboard/EventEdit";
 import SettingsPage from "../components/dashboard/SettingsPage";
 // Layouts
 import AppLayout from "../components/layout/AppLayout";
-import Payment from "../components/rsvp/Payment";
-import Thanks from "../components/rsvp/Thanks";
-import Ticket from "../components/rsvp/Ticket";
 import ErrorPage from "../pages/ErrorPage";
 import EventDetails from "../pages/EventDetails";
 import EventsPage from "../pages/EventsPage";
