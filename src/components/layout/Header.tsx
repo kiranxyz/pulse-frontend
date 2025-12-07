@@ -11,16 +11,17 @@ export default function Header({
   openLoginModal,
   openRegisterModal,
 }: HeaderProps) {
-  const { me, logout } = useAuthContext();
+  const { member, logout } = useAuthContext();
+  const maintenanceMode = localStorage.getItem("maintenanceMode") === "true";
+  console.log(maintenanceMode);
+  const isGuest = !member;
+  const role = member?.role?.toLowerCase() || "";
+  const base = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
-  const avatarSrc = me?.avatar
-    ? `${import.meta.env.VITE_PULSE_BACKEND_API_URL}/uploads/${me.avatar}`
-    : "";
-
-  const role = me?.role?.toLowerCase() || "guest";
+  const avatarSrc = member?.avatar ? `${base}/uploads/${member.avatar}` : "";
 
   const handleLogout = async () => {
-    await logout({ email: me?.email || "", password: "" });
+    await logout({ email: member?.email || "", password: "" });
     window.location.href = "/";
   };
 
@@ -28,28 +29,46 @@ export default function Header({
     {
       label: "Home",
       path: "/",
-      roles: ["admin", "organizer", "ticketchecker", "participant", "guest"],
+      roles: ["guest", "participant", "admin", "organizer", "ticketchecker"],
+    },
+    {
+      label: "Dashboard",
+      path: "/dashboard",
+      roles: ["admin", "organizer", "ticketchecker"],
+    },
+    {
+      label: "Profile",
+      path: "/profile",
+      roles: ["participant", "admin", "organizer", "ticketchecker"],
     },
     {
       label: "Events",
       path: "/events",
-      roles: ["admin", "organizer", "participant", "guest"],
+      roles: ["guest", "participant", "admin", "organizer", "ticketchecker"],
     },
-    { label: "Dashboard", path: "/dashboard", roles: ["admin", "organizer"] },
-    { label: "Check In", path: "/checkin", roles: ["ticketchecker", "admin"] },
     {
-      label: "Profile",
-      path: "/profile",
-      roles: ["admin", "organizer", "ticketchecker", "participant"],
+      label: "Register",
+      path: "/register",
+      roles: ["guest"],
     },
-    { label: "Register", path: "/register", roles: ["guest"] },
-    { label: "Login", path: "/login", roles: ["guest"] },
+    {
+      label: "Login",
+      path: "/login",
+      roles: ["guest"],
+    },
   ];
 
-  const visibleNav = navItems.filter((item) => item.roles.includes(role));
+  const visibleNav = navItems.filter((item) =>
+    isGuest ? item.roles.includes("guest") : item.roles.includes(role),
+  );
 
   return (
     <header className="bg-base-100 border-b">
+      {maintenanceMode && (
+        <span className="rounded bg-yellow-300 px-2 py-1 text-xs text-black">
+          Maintenance Mode
+        </span>
+      )}
       <nav className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-2 p-4">
         <Link
           to="/"
@@ -59,42 +78,63 @@ export default function Header({
         </Link>
 
         <div className="flex flex-wrap items-center gap-2">
-          {visibleNav.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className="btn btn-ghost btn-sm"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {visibleNav.map((item) => {
+            if (isGuest && item.label === "Register") {
+              return (
+                <button
+                  key={item.path}
+                  className="btn btn-outline btn-sm"
+                  onClick={openRegisterModal}
+                >
+                  {item.label}
+                </button>
+              );
+            }
+            if (isGuest && item.label === "Login") {
+              return (
+                <button
+                  key={item.path}
+                  className="btn btn-primary btn-sm"
+                  onClick={openLoginModal}
+                >
+                  {item.label}
+                </button>
+              );
+            }
+            if (item.label === "Dashboard" && role === "ticketchecker") {
+              return (
+                <Link
+                  key={item.path}
+                  to="/dashboard"
+                  className="btn btn-ghost btn-sm"
+                >
+                  {item.label}
+                </Link>
+              );
+            }
 
-          {me ? (
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className="btn btn-ghost btn-sm"
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+
+          {!isGuest && (
             <>
               {avatarSrc && (
                 <img
                   src={avatarSrc}
-                  alt={`${me.username || "User"} Avatar`}
+                  alt={`${member?.username || "User"} Avatar`}
                   className="h-10 w-10 rounded-full object-cover"
                 />
               )}
               <button className="btn btn-error btn-sm" onClick={handleLogout}>
                 Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                className="btn btn-outline btn-sm"
-                onClick={openRegisterModal}
-              >
-                Register
-              </button>
-              <button
-                className="btn btn-primary btn-sm"
-                onClick={openLoginModal}
-              >
-                Login
               </button>
             </>
           )}

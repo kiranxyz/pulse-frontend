@@ -13,7 +13,7 @@ export interface User {
 const BASE_URL = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
 export function useAuth() {
-  const [me, setMe] = useState<User | null>(null);
+  const [member, setMember] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   const normalizeRole = (role?: string) => role?.toLowerCase() || "guest";
@@ -44,9 +44,9 @@ export function useAuth() {
           role: normalizeRole(profileData.role || (user as User).role),
         };
       }
-      setMe(user);
+      setMember(user);
     } catch {
-      setMe(null);
+      setMember(null);
     } finally {
       setLoading(false);
     }
@@ -113,7 +113,7 @@ export function useAuth() {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Logout failed");
 
-    setMe(null);
+    setMember(null);
   }
 
   async function syncProfile(role?: string) {
@@ -137,7 +137,7 @@ export function useAuth() {
       // Normalize role and update user state
       const updatedRole = normalizeRole(data.role);
 
-      setMe((prev) => ({
+      setMember((prev) => ({
         ...prev,
         avatar: data.avatar,
         username: data.username,
@@ -161,22 +161,22 @@ export function useAuth() {
       if (!res.ok) throw new Error("Failed to fetch profile");
 
       const data = await res.json();
-      setMe({
+      setMember({
         ...data,
         role: normalizeRole(data.role),
       });
     } catch (err) {
       console.error(err);
-      setMe(null);
+      setMember(null);
     } finally {
       setLoading(false);
     }
   };
 
-  const session = { user: me };
+  const session = { user: member };
 
   return {
-    me,
+    member,
     loading,
     login,
     register,

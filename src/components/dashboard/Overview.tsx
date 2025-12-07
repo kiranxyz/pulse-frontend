@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
-import AdminLayout from "../../components/admin/AdminLayout";
+import AdminLayout from "../layout/AdminLayout";
 
 interface OverviewStats {
   totalUsers: number;
   totalEvents: number;
   totalTickets: number;
   totalCheckins: number;
-  revenue?: number; // added for future use
+  revenue?: number;
 }
 
 export default function OverviewPage() {
@@ -23,15 +23,12 @@ export default function OverviewPage() {
 
   return (
     <AdminLayout>
-      {/* PAGE HEADER */}
       <h1 className="mb-6 text-3xl font-bold">Dashboard Overview</h1>
 
-      {/* MAIN GRID */}
       {!stats ? (
         <p>Loading...</p>
       ) : (
         <>
-          {/* Stats Cards */}
           <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
             <div className="card bg-white p-5 shadow-md">
               <h3 className="text-lg font-semibold">Users</h3>
@@ -54,7 +51,6 @@ export default function OverviewPage() {
             </div>
           </div>
 
-          {/* Revenue Section (from AdminDashboard.tsx) */}
           <div className="card bg-white p-6 shadow-md">
             <h2 className="mb-3 text-2xl font-bold">Revenue</h2>
             <p className="text-gray-600">Revenue and stats coming soon…</p>

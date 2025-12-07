@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthProvider";
 
 export default function ProfilePage() {
-  const { me, loading, refetch } = useAuthContext();
+  const { member, loading, refetch } = useAuthContext();
   const baseUrl = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
   const [username, setUsername] = useState("");
@@ -26,14 +26,14 @@ export default function ProfilePage() {
   const pwdStrong = passwordStrength(newPassword) >= 4;
 
   useEffect(() => {
-    if (!me) return;
+    if (!member) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setUsername(me.username || "");
-    if (me.avatar) setPreviewAvatar(`${baseUrl}/uploads/${me.avatar}`);
-  }, [me]);
+    setUsername(member.username || "");
+    if (member.avatar) setPreviewAvatar(`${baseUrl}/uploads/${member.avatar}`);
+  }, [member]);
 
   if (loading) return <p>Loading profile...</p>;
-  if (!me) return <p>You must be logged in to view your profile.</p>;
+  if (!member) return <p>You must be logged in to view your profile.</p>;
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

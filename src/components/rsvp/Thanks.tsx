@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router";
 
-const apiBase = import.meta.env.VITE_API_URL;
+const apiBase = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
 if (!apiBase) {
   throw new Error(

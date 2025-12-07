@@ -1,42 +1,61 @@
-import { useState } from "react";
-
-const BASE_URL = import.meta.env.VITE_PULSE_BACKEND_API_URL;
-
-type CheckInResponse = {
-  message?: string;
-  error?: string;
-};
+import { useEffect, useState } from "react";
 
 export default function CheckInPage() {
-  const [ticketId, setTicketId] = useState<string>("");
-  const [status, setStatus] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [ticketId, setTicketId] = useState("");
+  const [user, setUser] = useState<UserProfile | null>(null);
 
-  if (!BASE_URL) console.error("Missing VITE_PULSE_BACKEND_API_URL");
+  const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
+  const base = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
-  const handleCheckIn = async () => {
+  type UserProfile = {
+    _id: string;
+    name: string;
+    email: string;
+    role: string;
+  };
+  useEffect(() => {
+    let mounted = true;
+
+    async function fetchProfile() {
+      try {
+        const res = await fetch(`${base}/api/profile`, {
+          credentials: "include",
+        });
+        const data = await res.json();
+        if (mounted) setUser(data);
+      } catch {
+        if (mounted) setUser(null);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+
+    fetchProfile();
+    return () => {
+      mounted = false;
+    };
+  }, [base]);
+  const handleCheckIn = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     if (!ticketId.trim()) {
       setStatus("Please enter a ticket ID.");
       return;
     }
-
     setStatus("");
     setLoading(true);
-
     try {
-      const res = await fetch(`${BASE_URL}/api/checkin`, {
+      const res = await fetch(`${base}/checker/${user?._id}/checkin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({ ticketId }),
       });
-
-      const data: CheckInResponse = await res.json();
-
+      const data = await res.json();
       if (!res.ok) {
         setStatus(`Error: ${data.error || "Unable to check in"}`);
       } else {
-        setStatus(`Successfully checked in: ${data.message || ticketId}`);
+        setStatus(`Checked: ${data.message || ticketId}`);
       }
     } catch (err) {
       setStatus(`Network error: ${String(err)}`);
@@ -46,44 +65,26 @@ export default function CheckInPage() {
   };
 
   return (
-    <main className="mx-auto mt-10 max-w-md rounded-xl bg-white p-6 shadow-lg">
-      <h1 className="mb-6 text-3xl font-bold text-gray-800">Ticket Check-In</h1>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleCheckIn();
-        }}
-        className="flex flex-col gap-4"
-      >
-        <div>
-          <label
-            htmlFor="ticketId"
-            className="mb-2 block font-medium text-gray-700"
-          >
-            Ticket ID
-          </label>
+    <main className="mx-auto mt-8 max-w-md rounded-lg bg-white p-6 shadow">
+      <h1 className="mb-4 text-2xl font-bold">Check In Ticket</h1>
+      <form onSubmit={handleCheckIn} className="space-y-4">
+        <label className="block">
+          <span className="text-sm font-medium">Ticket ID</span>
           <input
-            id="ticketId"
-            type="text"
-            className="input input-bordered w-full rounded-lg border-gray-300 transition focus:border-blue-400 focus:ring-2 focus:ring-blue-200"
-            placeholder="Enter ticket ID"
+            className="input w-full"
             value={ticketId}
             onChange={(e) => setTicketId(e.target.value)}
+            placeholder="Enter ticket ID"
           />
-        </div>
+        </label>
         <button
-          type="submit"
+          className={`btn btn-primary w-full ${loading ? "loading" : ""}`}
           disabled={loading}
-          className={`btn btn-primary w-full rounded-lg py-2 ${loading ? "loading" : ""}`}
         >
-          {loading ? "Checking..." : "Check In"}
+          {loading ? "Checking…" : "Check In"}
         </button>
-        {status && (
-          <p className="mt-4 animate-[slideUp_0.4s_ease-out] text-sm text-gray-700">
-            {status}
-          </p>
-        )}
       </form>
+      {status && <p className="mt-4 text-sm text-gray-700">{status}</p>}
     </main>
   );
 }

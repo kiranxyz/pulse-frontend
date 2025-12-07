@@ -18,7 +18,7 @@ const CheckoutForm = ({ eventId }: { eventId: string }) => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const { me } = useAuthContext();
+  const { member } = useAuthContext();
 
   if (!stripe || !elements) return <p>Initializing payment...</p>;
 
@@ -42,7 +42,7 @@ const CheckoutForm = ({ eventId }: { eventId: string }) => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             eventId: eventId,
-            userId: me?.id,
+            userId: member?.id,
           }),
         });
 
@@ -57,7 +57,7 @@ const CheckoutForm = ({ eventId }: { eventId: string }) => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            userId: me?.id,
+            userId: member?.id,
             ticketCode: registerResponsedata.ticket.ticketCode,
             eventId: eventId,
           }),
@@ -74,7 +74,7 @@ const CheckoutForm = ({ eventId }: { eventId: string }) => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              user: me?.id,
+              user: member?.id,
               title: "Event Registration Successful",
               message: `You have successfully registered for the event. Your ticket code is ${registerResponsedata.ticket.ticketCode}.`,
               type: "registration",

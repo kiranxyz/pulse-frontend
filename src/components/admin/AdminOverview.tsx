@@ -3,50 +3,44 @@ import { useEffect, useState } from "react";
 import { StatCard } from "../../components/admin/StatCard";
 import { type OverviewStats } from "../../types/OverviewStatsType";
 
-function fetchStats(): Promise<OverviewStats> {
-  return new Promise((resolve) =>
-    setTimeout(() => {
-      resolve({
-        overview: {
-          totalUsers: 1200,
-          newUsersThisMonth: 85,
-          activeUsersThisMonth: 430,
-        },
-        events: {
-          totalEvents: 18,
-          upcomingEventsThisMonth: 4,
-          pastEventsThisMonth: 2,
-        },
-        tickets: {
-          ticketsSoldThisMonth: 260,
-          ticketsAvailableThisMonth: 400,
-          checkinsThisMonth: 190,
-          attendanceRateThisMonth: 73,
-        },
-        finance: {
-          revenueTotal: 25200,
-          revenueThisMonth: 15800,
-          highestEarningEvent: { name: "Tech Fusion Summit", revenue: 9600 },
-        },
-      });
-    }, 500),
-  );
-}
-
 export default function AdminDashboard() {
   const [stats, setStats] = useState<OverviewStats | null>(null);
+  const [loading, setLoading] = useState(true);
+  const base = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
   useEffect(() => {
-    void (async () => {
-      const data = await fetchStats();
-      setStats(data);
-    })();
-  }, []);
+    let mounted = true;
+    async function fetchStats() {
+      try {
+        const res = await fetch(`${base}/admin/stats`, {
+          credentials: "include",
+        });
+        if (!res.ok) throw new Error("Failed to fetch stats");
+        const data: OverviewStats = await res.json();
+        if (mounted) setStats(data);
+      } catch (err) {
+        console.error(err);
+        if (mounted) setStats(null);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    }
+
+    fetchStats();
+
+    return () => {
+      mounted = false;
+    };
+  }, [base]);
 
   const currentMonth = new Date().toLocaleString("default", { month: "long" });
 
-  if (!stats) {
+  if (loading) {
     return <p className="p-4 text-center">Loading stats...</p>;
+  }
+
+  if (!stats) {
+    return <p className="p-4 text-center text-red-500">Failed to load stats</p>;
   }
 
   const renderStatSection = (

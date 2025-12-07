@@ -3,7 +3,7 @@ import { type ReactNode, createContext, useContext } from "react";
 import { type User, useAuth } from "../lib/useAuth";
 
 export interface AuthContextValue {
-  me: User | null;
+  member: User | null;
   loading: boolean;
   login: (payload: { email: string; password: string }) => Promise<void>;
   register: (payload: {

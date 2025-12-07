@@ -1,47 +1,53 @@
-import React from "react";
-import { Link, Outlet } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+// src/components/layout/AppLayout.tsx
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 import { useAuthContext } from "../../context/AuthProvider";
 
 export default function AppLayout() {
-  const { me, loading, logout } = useAuthContext();
-
+  const { member, loading, logout } = useAuthContext();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await logout({ email: me?.email || "", password: "" });
+      await logout({ email: member?.email || "", password: "" });
       navigate("/");
     } catch (err) {
       console.error("Logout failed:", err);
     }
   };
-
-  const navItems = [
+  const NAV_ITEMS = [
     {
       label: "Home",
       path: "/",
-      roles: ["admin", "organizer", "ticketchecker", "participant"],
+      roles: ["guest", "participant", "admin", "organizer", "ticketchecker"],
     },
     {
-      label: "Events",
-      path: "/events",
-      roles: ["admin", "organizer", "participant"],
+      label: "Register",
+      path: "/register",
+      roles: ["guest"],
     },
-    { label: "Dashboard", path: "/dashboard", roles: ["admin", "organizer"] },
+    {
+      label: "Login",
+      path: "/login",
+      roles: ["guest"],
+    },
     {
       label: "Profile",
       path: "/profile",
-      roles: ["admin", "organizer", "ticketchecker", "participant"],
+      roles: ["participant", "admin", "organizer", "ticketchecker"],
     },
-    { label: "Check In", path: "/checkin", roles: ["admin", "ticketchecker"] },
-    { label: "Register", path: "/register", roles: ["guest"] },
-    { label: "Login", path: "/login", roles: ["guest"] },
+    {
+      label: "Dashboard",
+      path: "/dashboard",
+      roles: ["admin", "organizer", "ticketchecker"],
+    },
   ];
-
-  const role = me?.role || "guest";
-  const visibleNav = navItems.filter((item) => item.roles.includes(role));
+  const role = member?.role || "guest";
+  const visibleNav = NAV_ITEMS.filter((item) =>
+    item.roles.includes(
+      role as "admin" | "organizer" | "ticketchecker" | "participant",
+    ),
+  );
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -52,12 +58,18 @@ export default function AppLayout() {
             <span>Loading...</span>
           ) : (
             visibleNav.map((item) => (
-              <Link key={item.path} to={item.path} className="hover:underline">
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  isActive ? "underline" : "hover:underline"
+                }
+              >
                 {item.label}
-              </Link>
+              </NavLink>
             ))
           )}
-          {role !== "guest" && (
+          {member && (
             <button
               onClick={handleLogout}
               className="bg-transparent hover:underline"

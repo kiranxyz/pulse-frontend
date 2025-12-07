@@ -21,27 +21,6 @@ interface EventType {
   options: EventOptions;
 }
 
-const MOCK_EVENTS: EventType[] = [
-  {
-    _id: "1",
-    title: "Munich Tech Conference 2025",
-    address: "MOC Veranstaltungscenter, Lilienthalallee 40, 80939 Munich",
-    date: "2025-12-05",
-    time: "09:00 AM",
-    totalSeats: 400,
-    ticketsSold: 300,
-    ticketsAvailable: 100,
-    checkins: 280,
-    options: {
-      discountFirst10: true,
-      showHurryUp: true,
-      reminder: true,
-      emailNotify: true,
-    },
-  },
-  // ... other mock events
-];
-
 function StatCard({ label, value }: { label: string; value: string | number }) {
   return (
     <div className="card bg-base-100 rounded-lg p-6 text-center shadow-lg">
@@ -82,8 +61,19 @@ export default function EventDetails() {
   const [event, setEvent] = useState<EventType | null>(null);
 
   useEffect(() => {
-    const foundEvent = MOCK_EVENTS.find((ev) => ev._id === id);
-    setEvent(foundEvent || null);
+    async function load() {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_PULSE_BACKEND_API_URL}/api/events/${id}`,
+          { credentials: "include" },
+        );
+        const data = await res.json();
+        setEvent(data);
+      } catch (err) {
+        setEvent(null);
+      }
+    }
+    load();
   }, [id]);
 
   if (!event)
