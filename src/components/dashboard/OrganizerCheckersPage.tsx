@@ -45,6 +45,7 @@ export default function OrganizerCheckersPage() {
           setEvents(eventData);
         }
       } catch (err) {
+        console.error(err);
         if (mounted) {
           setCheckers([]);
           setEvents([]);

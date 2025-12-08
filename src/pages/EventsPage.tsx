@@ -2,11 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 import EventCard from "../components/ui/EventCard";
+import type { EventType } from "../types/EventType";
 
 const apiBase = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
 const EventsPage = () => {
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<EventType[]>([]);
 
   useEffect(() => {
     fetchEvents();
@@ -31,19 +32,7 @@ const EventsPage = () => {
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {events.map((event) => (
-          <EventCard
-            key={event._id}
-            id={event._id}
-            title={event.title}
-            date={event.date}
-            totalSeats={event.totalSeats}
-            seatsBooked={event.seatsBooked || 0}
-            image={event.image}
-            description={event.description}
-            price={event.price}
-            discount={event.discount}
-            options={{ showHurryUp: true, sendReminder: false }}
-          />
+          <EventCard key={event._id} event={event} />
         ))}
       </div>
     </div>

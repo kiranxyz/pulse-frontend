@@ -4,7 +4,7 @@ const apiBase = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
 if (!apiBase) {
   throw new Error(
-    "Missing API base key (VITE_API_URL) key in environment variables",
+    "Missing API base key (VITE_PULSE_BACKEND_API_URL) key in environment variables",
   );
 }
 
@@ -13,24 +13,24 @@ const Thanks = () => {
   const { state } = useLocation();
   //console.log("State in Thanks:", state);
   const ticketUrl = `${apiBase}/api/ticket/${state.ticketCode}`; // Replace with actual ticket URL or route
-  const calendarLink = () => {
-    const title = encodeURIComponent("Event Title");
-    const details = encodeURIComponent("Event Details");
-    const location = encodeURIComponent("Event Location");
-    const start = new Date();
-    const end = new Date();
-    end.setHours(start.getHours() + 1);
+  // const calendarLink = () => {
+  //   const title = encodeURIComponent("Event Title");
+  //   const details = encodeURIComponent("Event Details");
+  //   const location = encodeURIComponent("Event Location");
+  //   const start = new Date();
+  //   const end = new Date();
+  //   end.setHours(start.getHours() + 1);
 
-    const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${formatDate(start)}/${formatDate(
-      end,
-    )}&details=${details}&location=${location}&sf=true&output=xml`;
+  //   const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${formatDate(start)}/${formatDate(
+  //     end,
+  //   )}&details=${details}&location=${location}&sf=true&output=xml`;
 
-    return calendarUrl;
-  };
+  //   return calendarUrl;
+  // };
 
   // Helper to format date in YYYYMMDDTHHmmssZ
-  const formatDate = (date: Date) =>
-    date.toISOString().replace(/-|:|\.\d+/g, "");
+  // const formatDate = (date: Date) =>
+  //   date.toISOString().replace(/-|:|\.\d+/g, "");
 
   const viewTicket = async () => {
     try {

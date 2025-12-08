@@ -166,7 +166,10 @@ export default function AdminLayout() {
             ))}
           </nav>
 
-          <button onClick={logout} className="btn btn-error mt-auto">
+          <button
+            onClick={() => logout({ email: "", password: "" })}
+            className="btn btn-error mt-auto"
+          >
             Logout
           </button>
         </motion.aside>

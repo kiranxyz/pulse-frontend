@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import EventCard from "../components/ui/EventCard";
 import type { EventType } from "../types/EventType";
@@ -7,18 +7,19 @@ import type { EventType } from "../types/EventType";
 const AdminHome: React.FC = () => {
   const [events, setEvents] = useState<EventType[]>([]);
   const navigate = useNavigate();
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:9000";
+  const API_URL =
+    import.meta.env.VITE_PULSE_BACKEND_API_URL || "http://localhost:9000";
 
   useEffect(() => {
     fetch(`${API_URL}/events`)
       .then((res) => res.json())
-      .then((data) => setEvents(data))
+      .then((data) => setEvents(data.events))
       .catch(console.error);
   }, []);
 
-  const handleEdit = (id: string) => {
-    navigate(`/admin/dashboard/edit/${id}`);
-  };
+  // const handleEdit = (id: string) => {
+  //   navigate(`/admin/dashboard/edit/${id}`);
+  // };
 
   const goToDashboard = () => {
     navigate("/admin/dashboard");
@@ -36,20 +37,7 @@ const AdminHome: React.FC = () => {
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {events.map((event) => (
-          <EventCard
-            key={event.id || event._id}
-            id={event.id || event._id}
-            title={event.title}
-            date={event.date}
-            totalSeats={event.totalSeats}
-            seatsBooked={event.seatsBooked}
-            discount={event.discount}
-            description={event.description}
-            image={event.image ?? null}
-            price={event.price}
-            options={{ showHurryUp: true, sendReminder: false }}
-            onEdit={() => handleEdit(event.id || event._id)}
-          />
+          <EventCard event={event} key={event.id || event._id} />
         ))}
       </div>
     </div>

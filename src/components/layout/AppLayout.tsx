@@ -1,4 +1,3 @@
-// src/components/layout/AppLayout.tsx
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 import { useAuthContext } from "../../context/AuthProvider";

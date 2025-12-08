@@ -1,8 +1,8 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const apiBase = import.meta.env.VITE_API_URL;
+const apiBase = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
 interface Props {
   event?: any;
@@ -22,13 +22,11 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
   const [discountFirstN, setDiscountFirstN] = useState(
     event?.discount?.firstN || 0,
   );
-  const [discountPercent, setDiscountPercent] = useState(
-    event?.discount?.percent || 0,
-  );
+  const [discountPercent] = useState(event?.discount?.percent || 0);
   const [description, setDescription] = useState(event?.description || "");
   const [image, setImage] = useState(event?.image || "");
 
-  const [categories, setCategories] = useState<string[] | []>([]);
+ 
   // Tickboxes
   const [showHurryUp, setShowHurryUp] = useState(
     event?.options?.showHurryUp ?? true,
@@ -36,19 +34,6 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
   const [sendReminder, setSendReminder] = useState(
     event?.options?.sendReminder ?? true,
   );
-
-  useEffect(() => {
-    // # Fetch categories from API
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(`${apiBase}/api/categories`);
-        setCategories(response.data);
-      } catch (err) {
-        console.error("Error fetching categories:", err);
-      }
-    };
-    fetchCategories();
-  }, []);
 
   const handleSubmit = async () => {
     const payload = {

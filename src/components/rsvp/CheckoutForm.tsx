@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { useAuthContext } from "../../context/AuthProvider";
 import Notifications from "../notifications/Notifications";
 
-const apiBase = import.meta.env.VITE_API_URL;
+const apiBase = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
 const CheckoutForm = ({ eventId }: { eventId: string }) => {
   const stripe = useStripe();

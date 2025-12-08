@@ -23,7 +23,9 @@ const JoinEvent = ({ event }: { event: EventType }) => {
       {/* Open the modal using document.getElementById('ID').showModal() method */}
       <button
         className="btn btn-primary"
-        onClick={() => document.getElementById(modalId).showModal()}
+        onClick={() => {
+          (document.getElementById(modalId) as HTMLDialogElement)?.showModal();
+        }}
       >
         join
       </button>

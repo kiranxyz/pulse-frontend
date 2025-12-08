@@ -14,7 +14,6 @@ type UserProfile = {
 export default function OrganizerOverview() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [user, setUser] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
 
   const base = import.meta.env.VITE_PULSE_BACKEND_API_URL;
   useEffect(() => {
@@ -31,7 +30,7 @@ export default function OrganizerOverview() {
       } catch {
         if (mounted) setUser(null);
       } finally {
-        if (mounted) setLoading(false);
+        //
       }
     }
 

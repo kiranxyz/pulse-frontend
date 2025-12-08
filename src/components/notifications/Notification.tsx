@@ -1,9 +1,7 @@
-import React from "react";
-
 import type { NotificationType } from "../../types/NotificationType";
 
 const Notification = ({ notification }: { notification: NotificationType }) => {
-  return <div>Notification</div>;
+  return <div>{notification.message}</div>;
 };
 
 export default Notification;

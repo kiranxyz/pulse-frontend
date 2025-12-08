@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { useAuthContext } from "../../context/AuthProvider";
 
@@ -63,7 +63,7 @@ export default function Header({
   );
 
   return (
-    <header className="bg-base-100 border-b">
+    <header className="border-b bg-base-100">
       {maintenanceMode && (
         <span className="rounded bg-yellow-300 px-2 py-1 text-xs text-black">
           Maintenance Mode
