@@ -2,11 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 import EventCard from "../components/ui/EventCard";
+import type { EventType } from "../types/EventType";
 
-const apiBase = import.meta.env.VITE_API_URL;
+const apiBase = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
 const HomePage = () => {
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<EventType[]>([]);
 
   /* useEffect(() => {
     axios.get(`${apiBase}/api/events`)
@@ -33,9 +34,9 @@ const HomePage = () => {
       .catch(console.error);
   }, []);
 
-  const handleAttend = (id: string) => {
-    console.log("Attend clicked for event:", id);
-  };
+  // const handleAttend = (id: string) => {
+  //   console.log("Attend clicked for event:", id);
+  // };
 
   return (
     <div className="container mx-auto grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -43,21 +44,21 @@ const HomePage = () => {
         <p>No events found</p>
       ) : (
         events.map((event) => (
-          <EventCard
-            key={event._id}
-            id={event._id}
-            title={event.title}
-            description={event.description}
-            image={event.image}
-            address={event.address}
-            date={event.date}
-            time={event.time}
-            totalSeats={event.totalSeats}
-            seatsBooked={event.seatsBooked || 0}
-            discount={event.discount}
-            price={event.price}
-            onAttend={() => handleAttend(event.id || event._id)}
-          />
+          <EventCard event={event} key={event._id} />
+          //   key={event._id}
+          //   id={event._id}
+          //   title={event.title}
+          //   description={event.description}
+          //   image={event.image}
+          //   address={event.address}
+          //   date={event.date}
+          //   time={event.time}
+          //   totalSeats={event.totalSeats}
+          //   seatsBooked={event.seatsBooked || 0}
+          //   discount={event.discount}
+          //   price={event.price}
+          //   onAttend={() => handleAttend(event.id || event._id)}
+          // />
         ))
       )}
     </div>

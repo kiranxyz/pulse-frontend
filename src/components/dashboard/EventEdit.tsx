@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import EventForm from "./EventForm";
 
-const apiBase = import.meta.env.VITE_API_URL;
+const apiBase = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
 const EventEdit: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,7 +18,11 @@ const EventEdit: React.FC = () => {
       .catch((err) => console.error(err));
   }, [id]);
 
-  return eventData ? <EventForm mode="edit" event={eventData} /> : <p>Loading...</p>;
+  return eventData ? (
+    <EventForm mode="edit" event={eventData} />
+  ) : (
+    <p>Loading...</p>
+  );
 };
 
 export default EventEdit;

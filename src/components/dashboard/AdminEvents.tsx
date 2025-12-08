@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import EventCard from "../ui/EventCard";
 import type { EventType } from "../../types/EventType";
 
-const apiBase = import.meta.env.VITE_API_URL;
+const apiBase = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
 const AdminEvents: React.FC = () => {
   const [events, setEvents] = useState<EventType[]>([]);

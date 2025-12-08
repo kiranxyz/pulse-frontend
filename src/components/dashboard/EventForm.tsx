@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const apiBase = import.meta.env.VITE_API_URL;
+const apiBase = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
 interface Props {
   event?: any;
@@ -22,9 +22,7 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
   const [discountFirstN, setDiscountFirstN] = useState(
     event?.discount?.firstN || 0,
   );
-  const [discountPercent, ] = useState(
-    event?.discount?.percent || 0,
-  );
+  const [discountPercent] = useState(event?.discount?.percent || 0);
   const [description, setDescription] = useState(event?.description || "");
   const [image, setImage] = useState(event?.image || "");
 
@@ -36,7 +34,6 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
   const [sendReminder, setSendReminder] = useState(
     event?.options?.sendReminder ?? true,
   );
-
 
   const handleSubmit = async () => {
     const payload = {
