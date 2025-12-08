@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router";
 
-import AdminLayout from "../components/admin/AdminLayout";
 import AdminOverview from "../components/admin/AdminOverview";
 import AddEventPage from "../components/dashboard/AddEvent";
 import CheckInPage from "../components/dashboard/Checkin";
@@ -16,6 +15,7 @@ import OrganizerUsersPage from "../components/dashboard/OrganizerUsersPage";
 import SettingsPage from "../components/dashboard/Settings";
 import TicketCheckerDashboard from "../components/dashboard/TicketCheckerDashboard";
 import UsersPage from "../components/dashboard/Users";
+import AdminLayout from "../components/layout/AdminLayout";
 import AppLayout from "../components/layout/AppLayout";
 import Payment from "../components/rsvp/Payment";
 import Thanks from "../components/rsvp/Thanks";
