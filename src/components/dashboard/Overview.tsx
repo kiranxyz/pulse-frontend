@@ -14,24 +14,11 @@ export default function OverviewPage() {
   const [stats, setStats] = useState<OverviewStats | null>(null);
 
   useEffect(() => {
-    async function load() {
-      try {
-        const res = await fetch(
-          import.meta.env.VITE_PULSE_BACKEND_API_URL + "/admin/stats",
-          { credentials: "include" },
-        );
-
-        if (!res.ok) throw new Error("Failed to load stats");
-
-        const data: OverviewStats = await res.json();
-        setStats(data);
-      } catch (err) {
-        console.error(err);
-        setStats(null);
-      }
-    }
-
-    load();
+    fetch(import.meta.env.VITE_PULSE_BACKEND_API_URL + "/admin/stats", {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => setStats(data));
   }, []);
 
   return (
