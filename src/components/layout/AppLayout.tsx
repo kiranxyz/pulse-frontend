@@ -1,94 +1,91 @@
-import React from "react";
-import { Link, Outlet, useNavigate } from "react-router";
-import { ToastContainer } from "react-toastify";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 import { useAuthContext } from "../../context/AuthProvider";
 
-const AppLayout: React.FC = () => {
-  const { me, loading, logout } = useAuthContext();
-
+export default function AppLayout() {
+  const { member, loading, logout } = useAuthContext();
   const navigate = useNavigate();
+
   const handleLogout = async () => {
     try {
-      await logout({ email: me?.email || "", password: "" });
+      await logout({ email: member?.email || "", password: "" });
       navigate("/");
     } catch (err) {
       console.error("Logout failed:", err);
     }
   };
-  return (
-    <>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={1500}
-        theme="colored"
-      />
-      <div className="flex min-h-screen flex-col">
-        <header className="flex items-center justify-between bg-gray-800 p-4 text-white">
-          <h1 className="text-xl font-bold">Pulse App</h1>
-          <nav className="flex gap-4">
-            <Link to="/" className="hover:underline">
-              Home
-            </Link>
-
-            {loading && <span>Loading...</span>}
-
-            {(!loading && me && me.role === "admin") ||
-            me?.role === "organizer" ? (
-              <>
-                <Link to="/profile" className="hover:underline">
-                  Profile
-                </Link>
-                <Link to="/admin/dashboard" className="hover:underline">
-                  Dashboard
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="bg-transparent hover:underline"
-                >
-                  <span>Welcome, {me && me.username}!</span>
-                  Logout
-                </button>
-              </>
-            ) : me?.role === "participant" ? (
-              <>
-                <Link to="/profile" className="hover:underline">
-                  Profile
-                </Link>
-                <Link to="/events" className="hover:underline">
-                  My Events
-                </Link>
-
-                <button
-                  onClick={handleLogout}
-                  className="bg-transparent hover:underline"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/register" className="hover:underline">
-                  Register
-                </Link>
-                <Link to="/login" className="hover:underline">
-                  Login
-                </Link>
-              </>
-            )}
-          </nav>
-        </header>
-
-        <main className="grow bg-gray-100 p-6">
-          <Outlet /> {/* Render child pages */}
-        </main>
-
-        <footer className="bg-gray-800 p-4 text-center text-white">
-          &copy; {new Date().getFullYear()} Pulse App
-        </footer>
-      </div>
-    </>
+  const NAV_ITEMS = [
+    {
+      label: "Home",
+      path: "/",
+      roles: ["guest", "participant", "admin", "organizer", "ticketchecker"],
+    },
+    {
+      label: "Register",
+      path: "/register",
+      roles: ["guest"],
+    },
+    {
+      label: "Login",
+      path: "/login",
+      roles: ["guest"],
+    },
+    {
+      label: "Profile",
+      path: "/profile",
+      roles: ["participant", "admin", "organizer", "ticketchecker"],
+    },
+    {
+      label: "Dashboard",
+      path: "/dashboard",
+      roles: ["admin", "organizer", "ticketchecker"],
+    },
+  ];
+  const role = member?.role || "guest";
+  const visibleNav = NAV_ITEMS.filter((item) =>
+    item.roles.includes(
+      role as "admin" | "organizer" | "ticketchecker" | "participant",
+    ),
   );
-};
 
-export default AppLayout;
+  return (
+    <div className="flex min-h-screen flex-col">
+      <header className="flex flex-col items-center justify-between gap-2 bg-gray-800 p-4 text-white sm:flex-row">
+        <h1 className="text-xl font-bold">Pulse</h1>
+        <nav className="flex flex-wrap gap-4">
+          {loading ? (
+            <span>Loading...</span>
+          ) : (
+            visibleNav.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  isActive ? "underline" : "hover:underline"
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))
+          )}
+          {member && (
+            <button
+              onClick={handleLogout}
+              className="bg-transparent hover:underline"
+            >
+              Logout
+            </button>
+          )}
+        </nav>
+      </header>
+
+      <main className="flex-grow bg-gray-100 p-6">
+        <Outlet />
+      </main>
+
+      <footer className="bg-gray-800 p-4 text-center text-white">
+        &copy; {new Date().getFullYear()} Pulse
+      </footer>
+    </div>
+  );
+}

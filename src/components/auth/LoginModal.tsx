@@ -1,10 +1,55 @@
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
 
 import { useAuth } from "../../lib/useAuth.ts";
 
 interface LoginModalProps {
   close: () => void;
   openRegister: () => void;
+}
+
+interface InputProps {
+  id: string;
+  type: string;
+  value: string;
+  placeholder?: string;
+  valid?: boolean;
+  required?: boolean;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  children?: React.ReactNode;
+}
+
+function Input({
+  id,
+  type,
+  value,
+  placeholder,
+  valid,
+  required,
+  onChange,
+  children,
+}: InputProps) {
+  const borderClass = value
+    ? valid === undefined
+      ? "border-gray-300"
+      : valid
+        ? "border-green-500"
+        : "border-red-500"
+    : "border-gray-300";
+
+  return (
+    <div className="relative">
+      <input
+        id={id}
+        type={type}
+        className={`w-full rounded-lg border px-3 py-2 text-sm ${borderClass}`}
+        placeholder={placeholder}
+        value={value}
+        required={required}
+        onChange={onChange}
+      />
+      {children}
+    </div>
+  );
 }
 
 export default function LoginModal({ close, openRegister }: LoginModalProps) {
@@ -21,7 +66,7 @@ export default function LoginModal({ close, openRegister }: LoginModalProps) {
   const passwordValid = password.length >= 6;
   const canSubmit = emailValid && passwordValid;
 
-  const handleLogin = async (e?: React.FormEvent) => {
+  const handleLogin = async (e?: FormEvent) => {
     e?.preventDefault();
     if (!canSubmit) return;
     setLoading(true);
@@ -40,7 +85,7 @@ export default function LoginModal({ close, openRegister }: LoginModalProps) {
   const handleSignOut = async () => {
     setStatus("Signing out...");
     try {
-      await logout({ email, password });
+      await logout();
       setStatus("Signed out");
     } catch (err: unknown) {
       setStatus(
@@ -72,18 +117,12 @@ export default function LoginModal({ close, openRegister }: LoginModalProps) {
             <label htmlFor="email" className="mb-1 block text-sm font-medium">
               Email
             </label>
-            <input
+            <Input
               id="email"
               type="email"
-              className={`w-full rounded-lg border px-3 py-2 text-sm ${
-                email
-                  ? emailValid
-                    ? "border-green-500"
-                    : "border-red-500"
-                  : "border-gray-300"
-              }`}
-              placeholder="Enter your email"
               value={email}
+              placeholder="Enter your email"
+              valid={email ? emailValid : undefined}
               required
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -99,22 +138,15 @@ export default function LoginModal({ close, openRegister }: LoginModalProps) {
             >
               Password
             </label>
-            <div className="relative">
-              <input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                className={`w-full rounded-lg px-3 py-2 pr-10 text-sm ${
-                  password
-                    ? passwordValid
-                      ? "border-green-500"
-                      : "border-red-500"
-                    : "border-gray-300"
-                }`}
-                placeholder="Enter your password"
-                value={password}
-                required
-                onChange={(e) => setPassword(e.target.value)}
-              />
+            <Input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              placeholder="Enter your password"
+              valid={password ? passwordValid : undefined}
+              required
+              onChange={(e) => setPassword(e.target.value)}
+            >
               <button
                 type="button"
                 className="absolute top-1/2 right-2 -translate-y-1/2 text-sm opacity-80"
@@ -123,7 +155,7 @@ export default function LoginModal({ close, openRegister }: LoginModalProps) {
               >
                 {showPassword ? "HIDE" : "SHOW"}
               </button>
-            </div>
+            </Input>
             {password && !passwordValid && (
               <p className="mt-1 text-xs text-red-600">
                 Password must be at least 6 characters
