@@ -1,36 +1,8 @@
 import { useLocation, useNavigate, Link } from "react-router";
 import type { EventType } from "../../types/EventType";
+import JoinEvent from "../rsvp/JoinEvent";
 
-// interface Props {
-//   id: string;
-//   title: string;
-//   date: string;
-//   time?: string;
-//   totalSeats: number;
-//   seatsBooked: number;
-//   discount?: { firstN: number; percent: number };
-//   description: string;
-//   address?: string;
-//   image: string;
-//   price: number;
-//   options?: { showHurryUp: boolean; sendReminder: boolean };
-//   onEdit?: () => void;
-//   onAttend?: () => void;
-// }
 const EventCard = ({ event }: { event: EventType }) => {
-  // const EventCard: React.FC<Props> = ({
-  //   id,
-  //   title,
-  //   date,
-  //   totalSeats,
-  //   seatsBooked,
-  //   discount,
-  //   description,
-  //   image,
-  //   price,
-  //   options = { showHurryUp: false, sendReminder: false },
-  //   onEdit,
-  // }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -43,10 +15,7 @@ const EventCard = ({ event }: { event: EventType }) => {
   };
 
   return (
-    <div
-      className="card bg-base-100 flex cursor-pointer flex-row items-start gap-4 p-4 shadow-md transition hover:shadow-lg"
-      onClick={handleClick}
-    >
+    <div className="card bg-base-100 flex cursor-pointer flex-row items-start gap-4 p-4 shadow-md transition hover:shadow-lg">
       {/* Event Image */}
       <div className="h-32 w-32 shrink-0 overflow-hidden rounded">
         {event.image ? (
@@ -54,6 +23,7 @@ const EventCard = ({ event }: { event: EventType }) => {
             src={event.image}
             alt={event.title}
             className="h-full w-full object-cover"
+            onClick={handleClick}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-gray-200 text-gray-500">
@@ -87,15 +57,7 @@ const EventCard = ({ event }: { event: EventType }) => {
 
         {/* Buttons */}
         <div className="mt-4 flex gap-2">
-          <button
-            className="btn btn-primary btn-sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              console.log("Attend clicked");
-            }}
-          >
-            Attend
-          </button>
+          <JoinEvent event={event} />
 
           {isAdmin && (
             <Link

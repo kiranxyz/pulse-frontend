@@ -32,7 +32,7 @@ const JoinEvent = ({ event }: { event: EventType }) => {
       <dialog id={modalId} className="modal">
         <div className="modal-box">
           <h3 className="text-lg font-bold">
-            {me?.username} Welcome to Join us at!
+            {me?.username?.toUpperCase()} Welcome to Join us at!
           </h3>
           {event?.eventType === "free" ? (
             <>

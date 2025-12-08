@@ -70,6 +70,8 @@ const CheckoutForm = ({ eventId }: { eventId: string }) => {
           console.log(emailResponsedata.message);
           // # if everything is successful then show notification and redirect to thank you page
 
+          console.log(`Notification API Call : ${apiBase}/api/notifications`);
+
           const notificationRes = await fetch(`${apiBase}/api/notifications`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -77,7 +79,7 @@ const CheckoutForm = ({ eventId }: { eventId: string }) => {
               user: me?.id,
               title: "Event Registration Successful",
               message: `You have successfully registered for the event. Your ticket code is ${registerResponsedata.ticket.ticketCode}.`,
-              type: "registration",
+              type: "EVENT_REGISTER",
               isRead: false,
             }),
           });
