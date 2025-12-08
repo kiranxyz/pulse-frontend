@@ -5,7 +5,7 @@ import { useLocation } from "react-router";
 
 import CheckoutForm from "./CheckoutForm";
 
-const apiBase = import.meta.env.VITE_API_URL;
+const apiBase = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 const key = import.meta.env.VITE_PK_TEST_STRIPE_PUBLIC_KEY;
 if (!key) {
   throw new Error(

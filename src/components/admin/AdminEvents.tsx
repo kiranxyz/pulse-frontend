@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import EventCard from "../ui/EventCard";
-import type { Event } from "../types";
+import type { EventType } from "../../types/EventType";
+
+const API_URL = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
 const AdminEvents: React.FC = () => {
-  const [events, setEvents] = useState<Event[]>([]);
-  const navigate = useNavigate();
+  const [events, setEvents] = useState<EventType[]>([]);
+  //const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/events")
+    fetch(`${API_URL}/api/events`)
       .then((res) => res.json())
-      .then((data) => setEvents(data))
+      .then((data) => setEvents(data.events))
       .catch(console.error);
   }, []);
 
-  const handleEdit = (id: string) => {
-    navigate(`/admin/dashboard/edit/${id}`);
-  };
+  // const handleEdit = (id: string) => {
+  //   navigate(`/admin/dashboard/edit/${id}`);
+  // };
 
   return (
     <div>
@@ -32,20 +34,20 @@ const AdminEvents: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {events.map((event) => (
-            <EventCard
-              key={event.id || event._id}
-              id={event.id || event._id}
-              title={event.title}
-              date={event.date}
-              totalSeats={event.totalSeats}
-              seatsBooked={event.seatsBooked}
-              discount={event.discount}
-              description={event.description}
-              image={event.image || ""}
-              price={event.price}
-              options={{ showHurryUp: true, sendReminder: false }}
-              onEdit={() => handleEdit(event.id || event._id)}
-            />
+            <EventCard event={event} key={event._id} />
+            //   key={event.id || event._id}
+            //   id={event.id || event._id}
+            //   title={event.title}
+            //   date={event.date}
+            //   totalSeats={event.totalSeats}
+            //   seatsBooked={event.seatsBooked}
+            //   discount={event.discount}
+            //   description={event.description}
+            //   image={event.image || ""}
+            //   price={event.price}
+            //   options={{ showHurryUp: true, sendReminder: false }}
+            //   onEdit={() => handleEdit(event.id || event._id)}
+            // />
           ))}
         </div>
       )}
@@ -53,4 +55,4 @@ const AdminEvents: React.FC = () => {
   );
 };
 
-// export default AdminEvents;
+export default AdminEvents;

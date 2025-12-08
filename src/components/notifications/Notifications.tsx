@@ -1,5 +1,3 @@
-import React from "react";
-
 import type { NotificationType } from "../../types/NotificationType";
 import Notification from "./Notification";
 

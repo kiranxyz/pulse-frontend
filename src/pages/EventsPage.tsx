@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import EventCard from "../components/ui/EventCard";
+import type { EventType } from "../types/EventType";
 
-const apiBase = import.meta.env.VITE_API_URL;
+const apiBase = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
 const EventsPage = () => {
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<EventType[]>([]);
 
   useEffect(() => {
     fetchEvents();
