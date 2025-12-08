@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router";
 import EventCard from "../ui/EventCard";
-import { EventType } from "../../types/event";
+import type { EventType } from "../../types/EventType";
 
 const apiBase = import.meta.env.VITE_API_URL;
 
