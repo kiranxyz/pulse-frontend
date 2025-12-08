@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import EventCard from "../ui/EventCard";
+
 import type { EventType } from "../../types/EventType";
+import EventCard from "../ui/EventCard";
 
 const API_URL = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
@@ -55,4 +56,4 @@ const AdminEvents: React.FC = () => {
   );
 };
 
-// export default AdminEvents;
+export default AdminEvents;

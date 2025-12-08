@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
+
 import EventCard from "../components/ui/EventCard";
 import type { EventType } from "../types/EventType";
 

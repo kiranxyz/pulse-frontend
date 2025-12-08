@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
-import EventCard from "../ui/EventCard";
+
 import type { EventType } from "../../types/EventType";
+import EventCard from "../ui/EventCard";
 
 const apiBase = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
@@ -10,17 +11,15 @@ const AdminEvents: React.FC = () => {
   const [events, setEvents] = useState<EventType[]>([]);
 
   useEffect(() => {
-    fetchEvents();
+    (async () => {
+      try {
+        const res = await axios.get(`${apiBase}/api/events`);
+        setEvents(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
   }, []);
-
-  const fetchEvents = async () => {
-    try {
-      const res = await axios.get(`${apiBase}/api/events`);
-      setEvents(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   return (
     <div>
