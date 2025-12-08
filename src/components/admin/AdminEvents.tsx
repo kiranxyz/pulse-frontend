@@ -54,5 +54,4 @@ const AdminEvents: React.FC = () => {
     </div>
   );
 };
-
-// export default AdminEvents;
+ export default AdminEvents;
