@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import { useAuthContext } from "../context/AuthProvider";
 
@@ -91,7 +91,7 @@ export default function LoginPage() {
             />
             <button
               type="button"
-              className="absolute top-1/2 right-2 -translate-y-1/2 text-sm opacity-80"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-sm opacity-80"
               aria-label={showPassword ? "Hide password" : "Show password"}
               onClick={() => setShowPassword(!showPassword)}
             >

@@ -1,4 +1,4 @@
-import { Navigate, createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router";
 
 import AdminLayout from "../components/admin/AdminLayout";
 import AdminOverview from "../components/admin/AdminOverview";
@@ -7,12 +7,9 @@ import CreateEventPage from "../components/dashboard/CreateEvent";
 import EditEventPage from "../components/dashboard/EventEdit";
 // Layouts
 import AppLayout from "../components/layout/AppLayout";
-<<<<<<< HEAD
 import Payment from "../components/rsvp/Payment";
 import Thanks from "../components/rsvp/Thanks";
 import Ticket from "../components/rsvp/Ticket";
-=======
->>>>>>> 477b8005b61a7dddf08ae8144054443d56f815e6
 import ErrorPage from "../pages/ErrorPage";
 import EventDetails from "../pages/EventDetails";
 import EventsPage from "../pages/EventsPage";
@@ -41,12 +38,9 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-<<<<<<< HEAD
       { path: "/payment", element: <Payment /> },
       { path: "/thanks", element: <Thanks /> },
       { path: "/ticket", element: <Ticket /> },
-=======
->>>>>>> 477b8005b61a7dddf08ae8144054443d56f815e6
     ],
   },
 

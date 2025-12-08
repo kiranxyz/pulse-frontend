@@ -1,6 +1,6 @@
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, Outlet } from "react-router";
+import { useNavigate } from "react-router";
 
 import { useAuthContext } from "../../context/AuthProvider";
 
@@ -57,7 +57,7 @@ const AppLayout: React.FC = () => {
         </nav>
       </header>
 
-      <main className="flex-grow bg-gray-100 p-6">
+      <main className="grow bg-gray-100 p-6">
         <Outlet /> {/* Render child pages */}
       </main>
 

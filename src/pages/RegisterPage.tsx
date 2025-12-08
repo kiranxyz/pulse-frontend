@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 import { useAuthContext } from "../context/AuthProvider";
 
@@ -169,7 +169,7 @@ export default function RegisterPage() {
               />
               <button
                 type="button"
-                className="absolute top-1/2 right-2 -translate-y-1/2 text-sm opacity-80"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-sm opacity-80"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? "HIDE" : "SHOW"}
@@ -198,7 +198,7 @@ export default function RegisterPage() {
             </label>
             <select
               id="role"
-              className="select select-bordered w-full rounded-lg"
+              className="select-bordered select w-full rounded-lg"
               value={role}
               onChange={(e) =>
                 setRole(
@@ -217,7 +217,7 @@ export default function RegisterPage() {
             </select>
           </div>
 
-          <div className="bg-base-200 mt-2 rounded-lg border p-3">
+          <div className="mt-2 rounded-lg border bg-base-200 p-3">
             <label className="flex cursor-pointer items-center gap-3">
               <input
                 type="checkbox"
