@@ -1,14 +1,28 @@
 import React from "react";
+<<<<<<< HEAD
 import { Link, Outlet, useLocation } from "react-router-dom";
+=======
+import { Outlet, Link, useLocation } from "react-router-dom";
+>>>>>>> 477b8005b61a7dddf08ae8144054443d56f815e6
 
 const AdminLayout: React.FC = () => {
   const location = useLocation();
 
   return (
+<<<<<<< HEAD
     <div className="flex min-h-screen">
       {/* Sidebar */}
       <aside className="w-64 bg-gray-800 p-4 text-white">
         <h2 className="mb-4 text-xl font-bold">Admin Dashboard</h2>
+=======
+
+   
+
+    <div className="flex min-h-screen">
+      {/* Sidebar */}
+      <aside className="w-64 bg-gray-800 text-white p-4">
+        <h2 className="text-xl font-bold mb-4">Admin Dashboard</h2>
+>>>>>>> 477b8005b61a7dddf08ae8144054443d56f815e6
         <nav className="flex flex-col gap-2">
           <Link
             to="/admin/dashboard"
@@ -37,8 +51,14 @@ const AdminLayout: React.FC = () => {
         </nav>
       </aside>
 
+<<<<<<< HEAD
       <main className="flex-grow bg-gray-100 p-6">
         <Outlet />
+=======
+      
+      <main className="flex-grow p-6 bg-gray-100">
+        <Outlet /> 
+>>>>>>> 477b8005b61a7dddf08ae8144054443d56f815e6
       </main>
     </div>
   );

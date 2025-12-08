@@ -67,7 +67,10 @@ export function useAuth() {
     });
 
     const data = await res.json();
+<<<<<<< HEAD
     console.log("Login response:", data);
+=======
+>>>>>>> 477b8005b61a7dddf08ae8144054443d56f815e6
     if (!res.ok) throw new Error(data.error || "Login failed");
 
     await refetch();
