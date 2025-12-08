@@ -1,17 +1,20 @@
-import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router";
 
 interface Props {
   id: string;
   title: string;
   date: string;
+  time?: string;
   totalSeats: number;
   seatsBooked: number;
   discount?: { firstN: number; percent: number };
   description: string;
+  address?: string;
   image: string;
   price: number;
   options?: { showHurryUp: boolean; sendReminder: boolean };
+  onEdit?: () => void;
+  onAttend?: () => void;
 }
 
 const EventCard: React.FC<Props> = ({
@@ -25,9 +28,10 @@ const EventCard: React.FC<Props> = ({
   image,
   price,
   options = { showHurryUp: false, sendReminder: false },
+  onEdit,
 }) => {
   const location = useLocation();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const isAdmin = location.pathname.startsWith("/admin");
   const percentageBooked = (seatsBooked / totalSeats) * 100;
@@ -39,40 +43,48 @@ const EventCard: React.FC<Props> = ({
 
   return (
     <div
-      className="card bg-base-100 shadow-md p-4 flex flex-row gap-4 items-start cursor-pointer hover:shadow-lg transition"
+      className="card bg-base-100 flex cursor-pointer flex-row items-start gap-4 p-4 shadow-md transition hover:shadow-lg"
       onClick={handleClick}
     >
       {/* Event Image */}
-      <div className="w-32 h-32 rounded overflow-hidden flex-shrink-0">
+      <div className="h-32 w-32 shrink-0 overflow-hidden rounded">
         {image ? (
-          <img src={image} alt={title} className="w-full h-full object-cover" />
+          <img src={image} alt={title} className="h-full w-full object-cover" />
         ) : (
-          <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+          <div className="flex h-full w-full items-center justify-center bg-gray-200 text-gray-500">
             No Image
           </div>
         )}
       </div>
 
       {/* Event Info */}
-      <div className="flex flex-col flex-grow">
+      <div className="flex grow flex-col">
         <h2 className="text-xl font-bold">{title}</h2>
-        <p className="text-sm text-gray-500">{new Date(date).toLocaleDateString()}</p>
-        <p className="mt-1 text-sm">Seats: {seatsBooked}/{totalSeats}</p>
-        {hurryUp && <p className="text-red-600 text-sm font-semibold">Hurry up! Almost full.</p>}
-        {discount?.firstN > 0 && (
-          <p className="text-green-600 text-sm">
-            {discount.percent}% OFF for first {discount.firstN} attendees
+        <p className="text-sm text-gray-500">
+          {new Date(date).toLocaleDateString()}
+        </p>
+        <p className="mt-1 text-sm">
+          Seats: {seatsBooked}/{totalSeats}
+        </p>
+        {hurryUp && (
+          <p className="text-sm font-semibold text-red-600">
+            Hurry up! Almost full.
           </p>
         )}
-        <p className="mt-2 text-sm line-clamp-3">{description}</p>
-        <p className="text-lg font-semibold mt-2">€{price}</p>
+        {discount?.firstN && discount.firstN > 0 && (
+          <p className="text-sm text-green-600">
+            {discount?.percent}% OFF for first {discount.firstN} attendees
+          </p>
+        )}
+        <p className="mt-2 line-clamp-3 text-sm">{description}</p>
+        <p className="mt-2 text-lg font-semibold">€{price}</p>
 
         {/* Buttons */}
-        <div className="flex gap-2 mt-4">
+        <div className="mt-4 flex gap-2">
           <button
             className="btn btn-primary btn-sm"
             onClick={(e) => {
-              e.stopPropagation(); 
+              e.stopPropagation();
               console.log("Attend clicked");
             }}
           >
@@ -83,7 +95,10 @@ const EventCard: React.FC<Props> = ({
             <Link
               to={`/admin/dashboard/edit/${id}`}
               className="btn btn-outline btn-sm"
-              onClick={(e) => e.stopPropagation()} 
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit?.();
+              }}
             >
               Edit
             </Link>

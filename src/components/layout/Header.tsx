@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 import { useAuth } from "../../lib/useAuth.ts";
 import { useSession } from "../../lib/useAuthSession";
@@ -28,7 +28,7 @@ export default function Header({
   };
 
   return (
-    <header className="bg-base-100 border-b">
+    <header className="border-b bg-base-100">
       <nav
         className="mx-auto flex w-full max-w-6xl items-center justify-between p-4"
         aria-label="Main navigation"
