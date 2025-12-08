@@ -3,8 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import EventCard from "../ui/EventCard";
 import type { Event } from "../types";
 
- const AdminEvents: React.FC = () => {
-   const [events, setEvents] = useState<Event[]>([]);
+const AdminEvents: React.FC = () => {
+  const [events, setEvents] = useState<Event[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,11 +14,10 @@ import type { Event } from "../types";
       .catch(console.error);
   }, []);
 
-//   const handleEdit = (id: string) => {
-//     navigate(`/admin/dashboard/edit/${id}`);
-//   };
+  const handleEdit = (id: string) => {
+    navigate(`/admin/dashboard/edit/${id}`);
+  };
 
-<<<<<<< HEAD
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
@@ -53,41 +52,5 @@ import type { Event } from "../types";
     </div>
   );
 };
-=======
-//   return (
-//     <div>
-//       <div className="flex justify-between items-center mb-6">
-//         <h1 className="text-3xl font-bold">Events</h1>
-//         <Link to="/admin/dashboard/create">
-//           <button className="btn btn-primary">Create Event</button>
-//         </Link>
-//       </div>
-
-//       {events.length === 0 ? (
-//         <p>No events created yet.</p>
-//       ) : (
-//         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-//           {events.map(event => (
-//             <EventCard
-//               key={event.id || event._id}
-//               id={event.id || event._id}
-//               title={event.title}
-//               date={event.date}
-//               totalSeats={event.totalSeats}
-//               seatsBooked={event.seatsBooked}
-//               discount={event.discount}
-//               description={event.description}
-//               image={event.image || ""}
-//               price={event.price}
-//               options={{ showHurryUp: true, sendReminder: false }}
-//               onEdit={() => handleEdit(event.id || event._id)}
-//             />
-//           ))}
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
->>>>>>> 373e4acaf322a3f9cf590ac294066775ef2e96bf
 
 // export default AdminEvents;

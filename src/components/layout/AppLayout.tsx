@@ -1,19 +1,6 @@
 import React from "react";
-<<<<<<< HEAD
-import { Link, Outlet } from "react-router";
-import { useNavigate } from "react-router";
-=======
-import {
-  FaSignInAlt,
-  FaSignOutAlt,
-  FaUser,
-  FaUserCircle,
-} from "react-icons/fa";
-import { MdOutlineDashboard } from "react-icons/md";
-import { Link, Outlet } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router";
 import { ToastContainer } from "react-toastify";
->>>>>>> 373e4acaf322a3f9cf590ac294066775ef2e96bf
 
 import { useAuthContext } from "../../context/AuthProvider";
 
@@ -46,20 +33,13 @@ const AppLayout: React.FC = () => {
 
             {loading && <span>Loading...</span>}
 
-<<<<<<< HEAD
-      <main className="grow bg-gray-100 p-6">
-        <Outlet /> {/* Render child pages */}
-      </main>
-=======
             {(!loading && me && me.role === "admin") ||
             me?.role === "organizer" ? (
               <>
                 <Link to="/profile" className="hover:underline">
-                  <FaUserCircle size={20} />
                   Profile
                 </Link>
                 <Link to="/admin/dashboard" className="hover:underline">
-                  <MdOutlineDashboard size={20} />
                   Dashboard
                 </Link>
                 <button
@@ -67,7 +47,6 @@ const AppLayout: React.FC = () => {
                   className="bg-transparent hover:underline"
                 >
                   <span>Welcome, {me && me.username}!</span>
-                  <FaSignOutAlt size={20} />
                   Logout
                 </button>
               </>
@@ -79,7 +58,6 @@ const AppLayout: React.FC = () => {
                 <Link to="/events" className="hover:underline">
                   My Events
                 </Link>
->>>>>>> 373e4acaf322a3f9cf590ac294066775ef2e96bf
 
                 <button
                   onClick={handleLogout}
@@ -91,11 +69,9 @@ const AppLayout: React.FC = () => {
             ) : (
               <>
                 <Link to="/register" className="hover:underline">
-                  <FaUser size={20} />
                   Register
                 </Link>
                 <Link to="/login" className="hover:underline">
-                  <FaSignInAlt size={20} />
                   Login
                 </Link>
               </>

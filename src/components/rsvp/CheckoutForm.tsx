@@ -37,10 +37,6 @@ const CheckoutForm = ({ eventId }: { eventId: string }) => {
     if (result.paymentIntent?.status === "succeeded") {
       // Payment succeeded
       try {
-<<<<<<< HEAD
-        //console.log(`URL : ${apiBase}/api/registerParticipant`);
-=======
->>>>>>> 373e4acaf322a3f9cf590ac294066775ef2e96bf
         const response = await fetch(`${apiBase}/api/registerParticipant`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -63,25 +59,12 @@ const CheckoutForm = ({ eventId }: { eventId: string }) => {
           body: JSON.stringify({
             userId: me?.id,
             ticketCode: registerResponsedata.ticket.ticketCode,
-<<<<<<< HEAD
-=======
             eventId: eventId,
->>>>>>> 373e4acaf322a3f9cf590ac294066775ef2e96bf
           }),
         });
         if (!res.ok) {
           throw new Error("Failed to send ticket email");
         }
-<<<<<<< HEAD
-
-        const emailResponsedata = await response.json();
-        console.log("Email sent response:", emailResponsedata);
-        toast.success("Payment successful and registered for the event!");
-        // # Redirect to thank you page with ticket code
-        navigate("/thanks", {
-          state: { ticketCode: registerResponsedata.ticket.ticketCode },
-        });
-=======
         if (res.status === 200) {
           const emailResponsedata = await res.json();
           console.log(emailResponsedata.message);
@@ -113,7 +96,6 @@ const CheckoutForm = ({ eventId }: { eventId: string }) => {
             state: { ticketCode: registerResponsedata.ticket.ticketCode },
           });
         }
->>>>>>> 373e4acaf322a3f9cf590ac294066775ef2e96bf
       } catch (error) {}
     }
 

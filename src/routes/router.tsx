@@ -1,12 +1,7 @@
-<<<<<<< HEAD
 import { Navigate, createBrowserRouter } from "react-router";
-
-=======
-import { Navigate, createBrowserRouter } from "react-router-dom";
 import Thanks from "../components/rsvp/Thanks";
 import Ticket from "../components/rsvp/Ticket";
 import Payment from "../components/rsvp/Payment";
->>>>>>> 373e4acaf322a3f9cf590ac294066775ef2e96bf
 import AdminLayout from "../components/admin/AdminLayout";
 import AdminOverview from "../components/admin/AdminOverview";
 import AdminEvents from "../components/dashboard/AdminEvents";
