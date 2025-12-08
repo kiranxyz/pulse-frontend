@@ -26,6 +26,7 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
   const [description, setDescription] = useState(event?.description || "");
   const [image, setImage] = useState(event?.image || "");
 
+ 
   // Tickboxes
   const [showHurryUp, setShowHurryUp] = useState(
     event?.options?.showHurryUp ?? true,
