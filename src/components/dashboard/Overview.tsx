@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-import AdminLayout from "../layout/AdminLayout";
-
 interface OverviewStats {
   totalUsers: number;
   totalEvents: number;
@@ -22,7 +20,7 @@ export default function OverviewPage() {
   }, []);
 
   return (
-    <AdminLayout>
+    <main>
       <h1 className="mb-6 text-3xl font-bold">Dashboard Overview</h1>
 
       {!stats ? (
@@ -57,6 +55,6 @@ export default function OverviewPage() {
           </div>
         </>
       )}
-    </AdminLayout>
+    </main>
   );
 }
