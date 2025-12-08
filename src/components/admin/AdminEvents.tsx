@@ -55,4 +55,4 @@ const AdminEvents: React.FC = () => {
   );
 };
 
-export default AdminEvents;
+// export default AdminEvents;
