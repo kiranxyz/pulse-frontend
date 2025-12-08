@@ -5,7 +5,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { toastify } from "react-toastify";
+import { toast } from "react-toastify";
 
 import { useAuthContext } from "../../context/AuthProvider";
 
@@ -67,7 +67,7 @@ const CheckoutForm = ({ eventId }: { eventId: string }) => {
 
         const emailResponsedata = await response.json();
         console.log("Email sent response:", emailResponsedata);
-        toastify.success("Payment successful and registered for the event!");
+        toast.success("Payment successful and registered for the event!");
         // # Redirect to thank you page with ticket code
         navigate("/thanks", {
           state: { ticketCode: registerResponsedata.ticket.ticketCode },
