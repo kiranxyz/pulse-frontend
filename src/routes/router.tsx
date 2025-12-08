@@ -1,15 +1,21 @@
+<<<<<<< HEAD
 import { Navigate, createBrowserRouter } from "react-router";
 
+=======
+import { Navigate, createBrowserRouter } from "react-router-dom";
+import Thanks from "../components/rsvp/Thanks";
+import Ticket from "../components/rsvp/Ticket";
+import Payment from "../components/rsvp/Payment";
+>>>>>>> 373e4acaf322a3f9cf590ac294066775ef2e96bf
 import AdminLayout from "../components/admin/AdminLayout";
 import AdminOverview from "../components/admin/AdminOverview";
 import AdminEvents from "../components/dashboard/AdminEvents";
+import CheckInPage from "../components/dashboard/CheckInPage";
 import CreateEventPage from "../components/dashboard/CreateEvent";
 import EditEventPage from "../components/dashboard/EventEdit";
+import SettingsPage from "../components/dashboard/SettingsPage";
 // Layouts
 import AppLayout from "../components/layout/AppLayout";
-import Payment from "../components/rsvp/Payment";
-import Thanks from "../components/rsvp/Thanks";
-import Ticket from "../components/rsvp/Ticket";
 import ErrorPage from "../pages/ErrorPage";
 import EventDetails from "../pages/EventDetails";
 import EventsPage from "../pages/EventsPage";
@@ -38,9 +44,9 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      { path: "/payment", element: <Payment /> },
       { path: "/thanks", element: <Thanks /> },
       { path: "/ticket", element: <Ticket /> },
+      { path: "/payment", element: <Payment /> },
     ],
   },
 
@@ -56,6 +62,8 @@ export const router = createBrowserRouter([
           { path: "dashboard/events", element: <AdminEvents /> },
           { path: "dashboard/create", element: <CreateEventPage /> },
           { path: "dashboard/edit/:id", element: <EditEventPage /> },
+          { path: "dashboard/checkIn", element: <CheckInPage /> },
+          { path: "dashboard/settings", element: <SettingsPage /> },
         ],
       },
     ],

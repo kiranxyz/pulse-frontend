@@ -7,7 +7,7 @@ import type { EventType } from "../../types/EventType";
 const apiBase = import.meta.env.VITE_API_URL;
 
 const AdminEvents: React.FC = () => {
-  const [events, setEvents] = useState<EventType[]>([]);
+  const [events, setEvents] = useState<any[]>([]);
 
   useEffect(() => {
     fetchEvents();
