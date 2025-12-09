@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+
 import EventCard from "../components/ui/EventCard";
 import type { EventType } from "../types/EventType";
 

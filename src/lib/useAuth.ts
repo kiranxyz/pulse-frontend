@@ -13,11 +13,15 @@ export interface User {
 const BASE_URL = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 
 export function useAuth() {
-  const [me, setMe] = useState<User | null>(null);
+  const [member, setMember] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const normalizeRole = (role?: string) => role?.toLowerCase() || "guest";
 
   const refetch = async () => {
     try {
+      setLoading(true);
+
       const sessionRes = await fetch(
         `${BASE_URL}/api/auth/native/get-session`,
         {
@@ -37,13 +41,12 @@ export function useAuth() {
           ...(user as User),
           username: profileData.username,
           avatar: profileData.avatar,
-          role: profileData.role,
+          role: normalizeRole(profileData.role || (user as User).role),
         };
       }
-
-      setMe(user);
+      setMember(user);
     } catch {
-      setMe(null);
+      setMember(null);
     } finally {
       setLoading(false);
     }
@@ -77,10 +80,10 @@ export function useAuth() {
     email: string;
     password: string;
     username: string;
-    title: string;
-    location: string;
+    title?: string;
+    location?: string;
     role: string;
-    age: string;
+    age?: string;
   }) {
     const res = await fetch(`${BASE_URL}/api/auth/native/sign-up/email`, {
       method: "POST",
@@ -88,42 +91,39 @@ export function useAuth() {
       body: JSON.stringify({
         email: payload.email.trim(),
         password: payload.password,
+        role: normalizeRole(payload.role),
       }),
       credentials: "include",
     });
-    console.log(payload);
-    console.log("Register response:", res);
+
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Registration failed");
-    await syncProfile();
+
+    await syncProfile(normalizeRole(payload.role));
     await refetch();
   }
 
-  async function logout({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }) {
+  async function logout() {
     const res = await fetch(`${BASE_URL}/api/auth/native/sign-out`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
       credentials: "include",
     });
 
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Logout failed");
 
-    setMe(null);
+    setMember(null);
   }
 
-  async function syncProfile() {
+  async function syncProfile(role?: string) {
     try {
       const res = await fetch(`${BASE_URL}/api/profile/sync`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         credentials: "include",
+        body: JSON.stringify({ role }),
       });
 
       if (!res.ok) {
@@ -132,41 +132,50 @@ export function useAuth() {
       }
 
       const data = await res.json();
-      console.log("Profile synced DATA :", data);
-      setMe({
-        ...me,
+
+      // Normalize role and update user state
+      const updatedRole = normalizeRole(data.role);
+
+      setMember((prev) => ({
+        ...prev,
         avatar: data.avatar,
         username: data.username,
-        role: data.role,
-      });
+        role: updatedRole,
+      }));
+
       return data;
     } catch (err) {
       console.error("Sync profile failed:", err);
       return null;
     }
   }
+
   const fetchProfile = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_PULSE_BACKEND_API_URL}`, {
+      const res = await fetch(`${BASE_URL}/api/profile`, {
         credentials: "include",
       });
 
       if (!res.ok) throw new Error("Failed to fetch profile");
 
       const data = await res.json();
-      setMe(data);
+      setMember({
+        ...data,
+        role: normalizeRole(data.role),
+      });
     } catch (err) {
       console.error(err);
-      setMe(null);
+      setMember(null);
     } finally {
       setLoading(false);
     }
   };
-  const session = { user: me };
+
+  const session = { user: member };
 
   return {
-    me,
+    member,
     loading,
     login,
     register,

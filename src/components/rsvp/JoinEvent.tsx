@@ -5,7 +5,7 @@ import type { EventType } from "../../types/EventType";
 
 const JoinEvent = ({ event }: { event: EventType }) => {
   const navigate = useNavigate();
-  const { me } = useAuthContext();
+  const { member } = useAuthContext();
 
   const modalId = "join_event_modal_" + event._id;
 
@@ -32,7 +32,7 @@ const JoinEvent = ({ event }: { event: EventType }) => {
       <dialog id={modalId} className="modal">
         <div className="modal-box">
           <h3 className="text-lg font-bold">
-            {me?.username?.toUpperCase()} Welcome to Join us at!
+            {member?.username?.toUpperCase()} Welcome to Join us at!
           </h3>
           {event?.eventType === "free" ? (
             <>
