@@ -98,7 +98,9 @@ const CheckoutForm = ({ eventId }: { eventId: string }) => {
             state: { ticketCode: registerResponsedata.ticket.ticketCode },
           });
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     if (result.error) {
