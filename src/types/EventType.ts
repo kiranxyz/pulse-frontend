@@ -8,8 +8,15 @@ export type DBEventType = {
 
 export type EventType = DBEventType & {
   title: string;
+  id: string;
+  _id: string;
   date: string;
+  topic: string;
+  category: string;
+  location: string;
   totalSeats: number;
+  time: string;
+  address: string;
   seatsBooked: number;
 
   discount?: {

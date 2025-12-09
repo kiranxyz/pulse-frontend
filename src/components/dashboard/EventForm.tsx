@@ -1,17 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 const apiBase = import.meta.env.VITE_PULSE_BACKEND_API_URL;
-
 interface Props {
   event?: any;
   mode: "create" | "edit";
 }
-
 const EventForm: React.FC<Props> = ({ event, mode }) => {
   const navigate = useNavigate();
-
   // Form fields
   const [title, setTitle] = useState(event?.title || "");
   const [address, setAddress] = useState(event?.address || "");
@@ -25,8 +21,6 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
   const [discountPercent] = useState(event?.discount?.percent || 0);
   const [description, setDescription] = useState(event?.description || "");
   const [image, setImage] = useState(event?.image || "");
-
- 
   // Tickboxes
   const [showHurryUp, setShowHurryUp] = useState(
     event?.options?.showHurryUp ?? true,
@@ -34,7 +28,6 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
   const [sendReminder, setSendReminder] = useState(
     event?.options?.sendReminder ?? true,
   );
-
   const handleSubmit = async () => {
     const payload = {
       title,
@@ -48,7 +41,6 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
       discount: { firstN: discountFirstN, percent: discountPercent },
       options: { showHurryUp, sendReminder },
     };
-
     try {
       if (mode === "create") {
         await axios.post(`${apiBase}/api/events`, payload);
@@ -60,13 +52,11 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
       console.error(err);
     }
   };
-
   return (
     <div className="p-4">
       <h1 className="mb-4 text-2xl font-bold">
         {mode === "create" ? "Create Event" : "Edit Event"}
       </h1>
-
       <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
           <label className="label">
@@ -80,7 +70,6 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
             onChange={(e) => setImage(e.target.value)}
           />
         </div>
-
         <div>
           <label className="label">
             <span className="label-text">Title</span>
@@ -93,7 +82,6 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
-
         <div>
           <label className="label">
             <span className="label-text">Address</span>
@@ -106,7 +94,6 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
             onChange={(e) => setAddress(e.target.value)}
           />
         </div>
-
         <div>
           <label className="label">
             <span className="label-text">Date</span>
@@ -118,7 +105,6 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
             onChange={(e) => setDate(e.target.value)}
           />
         </div>
-
         <div>
           <label className="label">
             <span className="label-text">Time</span>
@@ -130,7 +116,6 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
             onChange={(e) => setTime(e.target.value)}
           />
         </div>
-
         <div>
           <label className="label">
             <span className="label-text">Total Seats</span>
@@ -142,7 +127,6 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
             onChange={(e) => setTotalSeats(Number(e.target.value))}
           />
         </div>
-
         <div>
           <label className="label">
             <span className="label-text">Price (€)</span>
@@ -154,7 +138,6 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
             onChange={(e) => setPrice(Number(e.target.value))}
           />
         </div>
-
         <div className="col-span-full flex flex-col gap-2">
           <label className="flex cursor-pointer items-center gap-2">
             <input
@@ -178,7 +161,6 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
             />
           )}
         </div>
-
         <div className="col-span-full flex flex-col gap-2">
           <label className="flex cursor-pointer items-center gap-2">
             <input
@@ -199,7 +181,6 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
             Send reminder notification 1 hour before event
           </label>
         </div>
-
         <div className="col-span-full">
           <label className="label">
             <span className="label-text">Description</span>
@@ -211,7 +192,6 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-
         <div className="col-span-full">
           <button
             className={`btn ${mode === "create" ? "btn-success" : "btn-primary"} w-full`}
@@ -224,5 +204,4 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
     </div>
   );
 };
-
 export default EventForm;

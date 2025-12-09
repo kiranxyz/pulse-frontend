@@ -17,40 +17,46 @@ const EventDetails: React.FC = () => {
       .catch((err) => console.error(err));
   }, [id]);
 
-  if (!event) return <p>Loading event details...</p>;
+  if (!event) return <p className="text-center mt-20 text-gray-500">Loading event details...</p>;
 
   return (
-    <div className="mx-auto max-w-3xl p-4">
-      <h1 className="mb-4 text-3xl font-bold">{event.title}</h1>
-      {event.image && (
+    <div className="p-6 max-w-4xl mx-auto mt-10">
+      {/* Header */}
+      <div className="mb-6">
+        <h1 className="text-4xl font-extrabold text-gray-800 mb-2">{event.title}</h1>
+        <p className="text-gray-500 text-lg">{new Date(event.date).toLocaleDateString()} | {event.time}</p>
+      </div>
+
+      {/* Image */}
+      {event.image ? (
         <img
           src={event.image}
           alt={event.title}
-          className="mb-4 h-64 w-full rounded object-cover"
+          className="w-full h-80 object-cover rounded-xl mb-6 shadow-md hover:scale-105 transition-transform duration-300"
         />
+      ) : (
+        <div className="w-full h-80 flex items-center justify-center bg-gray-200 rounded-xl mb-6 text-gray-400 font-semibold">
+          No Image Available
+        </div>
       )}
-      <p className="mb-2">
-        <strong>Date:</strong> {new Date(event.date).toLocaleDateString()}
-      </p>
-      <p className="mb-2">
-        <strong>Time:</strong> {event.time}
-      </p>
-      <p className="mb-2">
-        <strong>Address:</strong> {event.address}
-      </p>
-      <p className="mb-2">
-        <strong>Price:</strong> €{event.price}
-      </p>
-      <p className="mb-2">
-        <strong>Seats:</strong> {event.seatsBooked}/{event.totalSeats}
-      </p>
-      {event.discount && (
-        <p className="mb-2 text-green-600">
-          {event.discount.percent}% OFF for first {event.discount.firstN}{" "}
-          attendees
-        </p>
-      )}
-      <p className="mt-4">{event.description}</p>
+
+      {/* Details */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+        <p><span className="font-semibold">Address:</span> {event.address || "Not provided"}</p>
+        <p><span className="font-semibold">Price:</span> €{event.price}</p>
+        <p><span className="font-semibold">Seats:</span> {event.seatsBooked}/{event.totalSeats}</p>
+        {event.discount && (
+          <p className="text-green-600 font-semibold">
+            {event.discount.percent}% OFF for first {event.discount.firstN} attendees
+          </p>
+        )}
+      </div>
+
+      {/* Description */}
+      <div className="mt-6 text-gray-800 leading-relaxed">
+        <h2 className="text-2xl font-semibold mb-3">About this event</h2>
+        <p>{event.description}</p>
+      </div>
     </div>
   );
 };

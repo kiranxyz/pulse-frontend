@@ -79,8 +79,8 @@ export default function AppLayout() {
         </nav>
       </header>
 
-      <main className="flex-grow bg-gray-100 p-6">
-        <Outlet />
+      <main className="grow bg-gray-100 p-4">
+        <Outlet /> {/* Render child pages */}
       </main>
 
       <footer className="bg-gray-800 p-4 text-center text-white">
