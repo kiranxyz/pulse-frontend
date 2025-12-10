@@ -10,7 +10,6 @@ import EditEventPage from "../components/dashboard/EventEdit";
 import MyEvents from "../components/dashboard/MyEvents";
 import OrganizerCheckersPage from "../components/dashboard/OrganizerCheckersPage";
 import OrganizerDashboard from "../components/dashboard/OrganizerDashboard";
-import OrganizerEventsPage from "../components/dashboard/OrganizerEventsPage";
 import OrganizerUsersPage from "../components/dashboard/OrganizerUsersPage";
 import SettingsPage from "../components/dashboard/Settings";
 import TicketCheckerDashboard from "../components/dashboard/TicketCheckerDashboard";
