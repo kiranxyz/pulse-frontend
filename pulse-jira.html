@@ -1,0 +1,1528 @@
+<html
+        xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<title>Jira</title>
+<style type="text/css">
+table {
+    mso-displayed-decimal-separator:"\.";
+    mso-displayed-thousand-separator:"\,";
+}
+body
+{
+    margin: 0px;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    color:black;
+}
+
+</style>
+<META HTTP-EQUIV="Content-Type" Content="application/vnd.ms-excel; charset=UTF-8">
+<!-- JRA-7598 - ensure fields (e.g. description) occupy only one cell - even fields containing newlines. -->
+<!--
+Vertical align all cells to the top, in order to align all issue rows of issuetable to the top,
+since Excel does not use or save the css files it is hardcoded here.
+-->
+<style>
+@page
+{
+mso-page-orientation:landscape;
+margin:.25in .25in .5in .25in;
+mso-header-margin:.5in;
+mso-footer-margin:.25in;
+mso-footer-data:"&R&P of &N";
+mso-horizontal-page-align:center;
+mso-vertical-page-align:center;
+}
+
+td.issuekey,
+td.issuetype,
+td.status {
+    mso-style-parent: "";
+    mso-number-format: \@;
+    text-align: left;
+}
+br
+{
+    mso-data-placement:same-cell;
+}
+
+td
+{
+    vertical-align: top;
+}
+</style>
+
+<!--[if gte mso 9]><xml>
+<x:ExcelWorkbook>
+<x:ExcelWorksheets>
+<x:ExcelWorksheet>
+<x:Name>general_report</x:Name>
+<x:WorksheetOptions>
+<x:Print>
+<x:ValidPrinterInfo/>
+</x:Print>
+</x:WorksheetOptions>
+</x:ExcelWorksheet>
+</x:ExcelWorksheets>
+</x:ExcelWorkbook>
+</xml><![endif]-->
+</head>
+<body>
+
+<table border="1">
+    <tr bgcolor="#205081" height="30">
+        <td colspan="45">
+            <img src="https://anila11-s-workspace.atlassian.net/images/icon-jira-family-logo.png" width="57" height="30" border="0" alt="Jira">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="45">
+            <a href="https://anila11-s-workspace.atlassian.net/issues/?jql=project+%3D+%22PUL%22+AND+status+%3D+%27Done%27+AND+statusCategoryChangedDate+%3E%3D+-2w">Jira</a>
+        </td>
+    </tr>
+    <tr>
+                <td colspan="45">
+            Displaying <strong>17</strong> issues at <strong>10/Dec/25 11:50 AM</strong>.
+        </td>
+    </tr>
+</table>
+
+
+
+
+                                        <table id="issuetable" class="aui " border="1" cellpadding="3" cellspacing="1" width="100%">
+                        <thead>
+        <tr class="rowHeader">
+            
+                                                            <th class="colHeaderLink headerrow-statuscategorychangedate" data-id="statuscategorychangedate">
+                                                        Status Category Changed
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-issuetype" data-id="issuetype">
+                                                        Issue Type
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-issuekey" data-id="issuekey">
+                                                        Key
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-timespent" data-id="timespent">
+                                                        Time Spent
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-timeoriginalestimate" data-id="timeoriginalestimate">
+                                                        Original estimate
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-project" data-id="project">
+                                                        Project
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-description" data-id="description">
+                                                        Description
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-fixVersions" data-id="fixVersions">
+                                                        Fix versions
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-statusCategory" data-id="statusCategory">
+                                                        Status Category
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-aggregatetimespent" data-id="aggregatetimespent">
+                                                        Σ Time Spent
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-parent" data-id="parent">
+                                                        Parent
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-resolution" data-id="resolution">
+                                                        Resolution
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-customfield_10015" data-id="customfield_10015">
+                                                        Start date
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-security" data-id="security">
+                                                        Security Level
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-aggregatetimeestimate" data-id="aggregatetimeestimate">
+                                                        Σ Remaining Estimate
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-resolutiondate" data-id="resolutiondate">
+                                                        Resolved
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-workratio" data-id="workratio">
+                                                        Work Ratio
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-summary" data-id="summary">
+                                                        Summary
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-lastViewed" data-id="lastViewed">
+                                                        Last Viewed
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-watches" data-id="watches">
+                                                        Watchers
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-thumbnail" data-id="thumbnail">
+                                                        Images
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-creator" data-id="creator">
+                                                        Creator
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-subtasks" data-id="subtasks">
+                                                        Sub-tasks
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-created" data-id="created">
+                                                        Created
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-customfield_10020" data-id="customfield_10020">
+                                                        Sprint
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-customfield_10021" data-id="customfield_10021">
+                                                        Flagged
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-reporter" data-id="reporter">
+                                                        Reporter
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-aggregateprogress" data-id="aggregateprogress">
+                                                        Σ Progress
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-customfield_10000" data-id="customfield_10000">
+                                                        Development
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-priority" data-id="priority">
+                                                        Priority
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-customfield_10001" data-id="customfield_10001">
+                                                        Team
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-labels" data-id="labels">
+                                                        Labels
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-customfield_10016" data-id="customfield_10016">
+                                                        Story point estimate
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-customfield_10017" data-id="customfield_10017">
+                                                        Issue color
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-environment" data-id="environment">
+                                                        Environment
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-customfield_10019" data-id="customfield_10019">
+                                                        Rank
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-timeestimate" data-id="timeestimate">
+                                                        Remaining Estimate
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-aggregatetimeoriginalestimate" data-id="aggregatetimeoriginalestimate">
+                                                        Σ Original Estimate
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-duedate" data-id="duedate">
+                                                        Due date
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-progress" data-id="progress">
+                                                        Progress
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-issuelinks" data-id="issuelinks">
+                                                        Linked Issues
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-votes" data-id="votes">
+                                                        Votes
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-assignee" data-id="assignee">
+                                                        Assignee
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-updated" data-id="updated">
+                                                        Updated
+                                                    </th>
+                                                
+                                                            <th class="colHeaderLink headerrow-status" data-id="status">
+                                                        Status
+                                                    </th>
+                                                                    </tr>
+    </thead>
+    <tbody>
+                    
+
+                <tr id="issuerow10099" rel="10099" data-issuekey="PUL-54" class="issuerow">
+                                            <td class="statuscategorychangedate"> 02/Dec/25 2:38 PM </td>
+                                            <td class="issuetype">    Subtask
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-54" href="https://anila11-s-workspace.atlassian.net/browse/PUL-54">PUL-54</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent">            Real time updates dashobard for organizer and check-in
+    </td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 02/Dec/25 2:38 PM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">PUL-7</span>
+                FE: checkin page
+    </p>
+</td>
+                                            <td class="lastViewed"> &nbsp; </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks"></td>
+                                            <td class="created"> 17/Nov/25 10:38 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016"></td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|i000br:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="updated"> 02/Dec/25 2:38 PM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+
+
+                <tr id="issuerow10039" rel="10039" data-issuekey="PUL-24" class="issuerow">
+                                            <td class="statuscategorychangedate"> 27/Nov/25 4:46 PM </td>
+                                            <td class="issuetype">    Subtask
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-24" href="https://anila11-s-workspace.atlassian.net/browse/PUL-24">PUL-24</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent">            Event Management CRUD
+    </td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 27/Nov/25 4:46 PM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">PUL-2</span>
+                BE: Show event details for one event
+    </p>
+</td>
+                                            <td class="lastViewed"> &nbsp; </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks"></td>
+                                            <td class="created"> 17/Nov/25 10:02 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016"></td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|i00053:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="updated"> 27/Nov/25 4:46 PM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+
+
+                <tr id="issuerow10037" rel="10037" data-issuekey="PUL-23" class="issuerow">
+                                            <td class="statuscategorychangedate"> 27/Nov/25 4:46 PM </td>
+                                            <td class="issuetype">    Subtask
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-23" href="https://anila11-s-workspace.atlassian.net/browse/PUL-23">PUL-23</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent">            Event Management CRUD
+    </td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 27/Nov/25 4:46 PM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">PUL-2</span>
+                FE: Show event details for one event
+    </p>
+</td>
+                                            <td class="lastViewed"> &nbsp; </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks"></td>
+                                            <td class="created"> 17/Nov/25 10:01 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016"></td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|i0004v:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="updated"> 27/Nov/25 4:46 PM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+
+
+                <tr id="issuerow10035" rel="10035" data-issuekey="PUL-22" class="issuerow">
+                                            <td class="statuscategorychangedate"> 27/Nov/25 4:46 PM </td>
+                                            <td class="issuetype">    Subtask
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-22" href="https://anila11-s-workspace.atlassian.net/browse/PUL-22">PUL-22</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent">            Event Management CRUD
+    </td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 27/Nov/25 4:46 PM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">PUL-2</span>
+                BE: Delete event
+    </p>
+</td>
+                                            <td class="lastViewed"> &nbsp; </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks"></td>
+                                            <td class="created"> 17/Nov/25 10:01 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016"></td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|i0004n:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="updated"> 27/Nov/25 4:46 PM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+
+
+                <tr id="issuerow10033" rel="10033" data-issuekey="PUL-21" class="issuerow">
+                                            <td class="statuscategorychangedate"> 27/Nov/25 4:45 PM </td>
+                                            <td class="issuetype">    Subtask
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-21" href="https://anila11-s-workspace.atlassian.net/browse/PUL-21">PUL-21</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent">            Event Management CRUD
+    </td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 27/Nov/25 4:45 PM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">PUL-2</span>
+                FE: Delete event
+    </p>
+</td>
+                                            <td class="lastViewed"> &nbsp; </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks"></td>
+                                            <td class="created"> 17/Nov/25 10:01 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016"></td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|i0004f:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="updated"> 27/Nov/25 4:45 PM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+
+
+                <tr id="issuerow10031" rel="10031" data-issuekey="PUL-20" class="issuerow">
+                                            <td class="statuscategorychangedate"> 27/Nov/25 4:45 PM </td>
+                                            <td class="issuetype">    Subtask
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-20" href="https://anila11-s-workspace.atlassian.net/browse/PUL-20">PUL-20</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent">            Event Management CRUD
+    </td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 27/Nov/25 4:45 PM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">PUL-2</span>
+                BE: Update/ edit event
+    </p>
+</td>
+                                            <td class="lastViewed"> &nbsp; </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks"></td>
+                                            <td class="created"> 17/Nov/25 10:00 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016"></td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|i00047:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="updated"> 27/Nov/25 4:45 PM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+
+
+                <tr id="issuerow10029" rel="10029" data-issuekey="PUL-19" class="issuerow">
+                                            <td class="statuscategorychangedate"> 27/Nov/25 4:45 PM </td>
+                                            <td class="issuetype">    Subtask
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-19" href="https://anila11-s-workspace.atlassian.net/browse/PUL-19">PUL-19</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent">            Event Management CRUD
+    </td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 27/Nov/25 4:45 PM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">PUL-2</span>
+                FE: Update /edit event
+    </p>
+</td>
+                                            <td class="lastViewed"> &nbsp; </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks"></td>
+                                            <td class="created"> 17/Nov/25 10:00 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016"></td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|i0003z:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="updated"> 27/Nov/25 4:45 PM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+
+
+                <tr id="issuerow10027" rel="10027" data-issuekey="PUL-18" class="issuerow">
+                                            <td class="statuscategorychangedate"> 27/Nov/25 4:45 PM </td>
+                                            <td class="issuetype">    Subtask
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-18" href="https://anila11-s-workspace.atlassian.net/browse/PUL-18">PUL-18</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent">            Event Management CRUD
+    </td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 27/Nov/25 4:45 PM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">PUL-2</span>
+                BE: Show event list
+    </p>
+</td>
+                                            <td class="lastViewed"> &nbsp; </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks"></td>
+                                            <td class="created"> 17/Nov/25 9:59 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016"></td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|i0003r:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="updated"> 27/Nov/25 4:45 PM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+
+
+                <tr id="issuerow10025" rel="10025" data-issuekey="PUL-17" class="issuerow">
+                                            <td class="statuscategorychangedate"> 27/Nov/25 4:45 PM </td>
+                                            <td class="issuetype">    Subtask
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-17" href="https://anila11-s-workspace.atlassian.net/browse/PUL-17">PUL-17</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent">            Event Management CRUD
+    </td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 27/Nov/25 4:45 PM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">PUL-2</span>
+                FE: Show event list
+    </p>
+</td>
+                                            <td class="lastViewed"> &nbsp; </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks"></td>
+                                            <td class="created"> 17/Nov/25 9:59 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016"></td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|i0003j:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="updated"> 27/Nov/25 4:45 PM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+
+
+                <tr id="issuerow10023" rel="10023" data-issuekey="PUL-16" class="issuerow">
+                                            <td class="statuscategorychangedate"> 27/Nov/25 4:45 PM </td>
+                                            <td class="issuetype">    Subtask
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-16" href="https://anila11-s-workspace.atlassian.net/browse/PUL-16">PUL-16</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent">            Event Management CRUD
+    </td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 27/Nov/25 4:45 PM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">PUL-2</span>
+                BE: create event
+    </p>
+</td>
+                                            <td class="lastViewed"> &nbsp; </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks"></td>
+                                            <td class="created"> 17/Nov/25 9:59 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016"></td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|i0003b:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="updated"> 27/Nov/25 4:45 PM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+
+
+                <tr id="issuerow10021" rel="10021" data-issuekey="PUL-15" class="issuerow">
+                                            <td class="statuscategorychangedate"> 27/Nov/25 4:45 PM </td>
+                                            <td class="issuetype">    Subtask
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-15" href="https://anila11-s-workspace.atlassian.net/browse/PUL-15">PUL-15</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent">            Event Management CRUD
+    </td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 27/Nov/25 4:45 PM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">PUL-2</span>
+                FE: create event
+    </p>
+</td>
+                                            <td class="lastViewed"> &nbsp; </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks"></td>
+                                            <td class="created"> 17/Nov/25 9:58 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016"></td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|i00033:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="updated"> 27/Nov/25 4:45 PM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+
+
+                <tr id="issuerow10019" rel="10019" data-issuekey="PUL-14" class="issuerow">
+                                            <td class="statuscategorychangedate"> 26/Nov/25 4:48 PM </td>
+                                            <td class="issuetype">    Subtask
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-14" href="https://anila11-s-workspace.atlassian.net/browse/PUL-14">PUL-14</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent">            Authentication & Profile Management
+    </td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 26/Nov/25 4:48 PM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">PUL-1</span>
+                BE: Profile CRUD
+    </p>
+</td>
+                                            <td class="lastViewed"> &nbsp; </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks"></td>
+                                            <td class="created"> 17/Nov/25 9:57 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016"></td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|i0002v:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="updated"> 26/Nov/25 4:48 PM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+
+
+                <tr id="issuerow10017" rel="10017" data-issuekey="PUL-13" class="issuerow">
+                                            <td class="statuscategorychangedate"> 26/Nov/25 4:48 PM </td>
+                                            <td class="issuetype">    Subtask
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-13" href="https://anila11-s-workspace.atlassian.net/browse/PUL-13">PUL-13</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent">            Authentication & Profile Management
+    </td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 26/Nov/25 4:48 PM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+            <span class="parentIssue">PUL-1</span>
+                FE: Profile CRUD
+    </p>
+</td>
+                                            <td class="lastViewed"> 24/Nov/25 9:24 PM </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks"></td>
+                                            <td class="created"> 17/Nov/25 9:57 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016"></td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|i0002n:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="updated"> 26/Nov/25 4:48 PM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+
+
+                <tr id="issuerow10006" rel="10006" data-issuekey="PUL-7" class="issuerow">
+                                            <td class="statuscategorychangedate"> 10/Dec/25 11:47 AM </td>
+                                            <td class="issuetype">    Story
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-7" href="https://anila11-s-workspace.atlassian.net/browse/PUL-7">PUL-7</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent"></td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 10/Dec/25 11:47 AM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+                Real time updates dashobard for organizer and check-in
+    </p>
+</td>
+                                            <td class="lastViewed"> 03/Dec/25 3:13 PM </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks">                                        PUL-47,                                                PUL-48,                                                PUL-49,                                                PUL-50,                                                PUL-54,                                                PUL-55                        </td>
+                                            <td class="created"> 17/Nov/25 9:52 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016">    5
+</td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|i0001b:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">            Anila Saifan
+    </td>
+                                            <td class="updated"> 10/Dec/25 11:47 AM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+
+
+                <tr id="issuerow10004" rel="10004" data-issuekey="PUL-5" class="issuerow">
+                                            <td class="statuscategorychangedate"> 03/Dec/25 8:25 AM </td>
+                                            <td class="issuetype">    Story
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-5" href="https://anila11-s-workspace.atlassian.net/browse/PUL-5">PUL-5</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent"></td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 03/Dec/25 8:25 AM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+                RSVP, tickets generation and payment(stripe , paypal)
+    </p>
+</td>
+                                            <td class="lastViewed"> 01/Dec/25 9:40 AM </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks">                                        PUL-33,                                                PUL-34,                                                PUL-35,                                                PUL-36,                                                PUL-37,                                                PUL-38,                                                PUL-39,                                                PUL-40,                                                PUL-41,                                                PUL-42                        </td>
+                                            <td class="created"> 17/Nov/25 9:52 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016">    5
+</td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|i0000v:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">            aziz shad
+    </td>
+                                            <td class="updated"> 03/Dec/25 8:25 AM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+
+
+                <tr id="issuerow10001" rel="10001" data-issuekey="PUL-2" class="issuerow">
+                                            <td class="statuscategorychangedate"> 27/Nov/25 4:47 PM </td>
+                                            <td class="issuetype">    Story
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-2" href="https://anila11-s-workspace.atlassian.net/browse/PUL-2">PUL-2</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent"></td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 27/Nov/25 4:47 PM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+                Event Management CRUD
+    </p>
+</td>
+                                            <td class="lastViewed"> 27/Nov/25 3:15 PM </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks">                                        PUL-15,                                                PUL-16,                                                PUL-17,                                                PUL-18,                                                PUL-19,                                                PUL-20,                                                PUL-21,                                                PUL-22,                                                PUL-23,                                                PUL-24                        </td>
+                                            <td class="created"> 17/Nov/25 9:51 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016">    5
+</td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|i00007:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">            Harshi
+    </td>
+                                            <td class="updated"> 27/Nov/25 4:47 PM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+
+
+                <tr id="issuerow10000" rel="10000" data-issuekey="PUL-1" class="issuerow">
+                                            <td class="statuscategorychangedate"> 27/Nov/25 8:47 AM </td>
+                                            <td class="issuetype">    Story
+</td>
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="PUL-1" href="https://anila11-s-workspace.atlassian.net/browse/PUL-1">PUL-1</a>
+</td>
+                                            <td class="timespent"></td>
+                                            <td class="timeoriginalestimate"></td>
+                                            <td class="project">    Pulse
+</td>
+                                            <td class="description"></td>
+                                            <td class="fixVersions">    &nbsp;
+</td>
+                                            <td class="statusCategory">
+    <span class="aui-lozenge aui-lozenge-subtle jira-issue-status-lozenge jira-issue-status-lozenge-green
+            jira-issue-status-lozenge-max-width-medium">Done</span>
+</td>
+                                            <td class="aggregatetimespent"></td>
+                                            <td class="parent"></td>
+                                            <td class="resolution">    Done
+</td>
+                                            <td class="customfield_10015"></td>
+                                            <td class="security"></td>
+                                            <td class="aggregatetimeestimate"></td>
+                                            <td class="resolutiondate"> 27/Nov/25 8:47 AM </td>
+                                            <td class="workratio">&nbsp;
+</td>
+                                            <td class="summary"><p>
+                Authentication &amp; Profile Management
+    </p>
+</td>
+                                            <td class="lastViewed"> 27/Nov/25 8:47 AM </td>
+                                            <td class="watches">1</td>
+                                            <td class="thumbnail"></td>
+                                            <td class="creator">            Anila Saifan
+    </td>
+                                            <td class="subtasks">                                        PUL-9,                                                PUL-10,                                                PUL-11,                                                PUL-12,                                                PUL-13,                                                PUL-14,                                                PUL-59                        </td>
+                                            <td class="created"> 17/Nov/25 9:51 AM </td>
+                                            <td class="customfield_10020">PUL Sprint 1</td>
+                                            <td class="customfield_10021"></td>
+                                            <td class="reporter">            Anila Saifan
+    </td>
+                                            <td class="aggregateprogress"></td>
+                                            <td class="customfield_10000"></td>
+                                            <td class="priority">           Medium
+    </td>
+                                            <td class="customfield_10001">    None
+</td>
+                                            <td class="labels"></td>
+                                            <td class="customfield_10016">    5
+</td>
+                                            <td class="customfield_10017"></td>
+                                            <td class="environment"></td>
+                                            <td class="customfield_10019">      0|hzzzzz:
+  </td>
+                                            <td class="timeestimate"></td>
+                                            <td class="aggregatetimeoriginalestimate"></td>
+                                            <td class="duedate">    &nbsp;
+</td>
+                                            <td class="progress"></td>
+                                            <td class="issuelinks"></td>
+                                            <td class="votes">0</td>
+                                            <td class="assignee">            Anila Saifan
+    </td>
+                                            <td class="updated"> 27/Nov/25 8:47 AM </td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-green jira-issue-status-lozenge-done aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Done&lt;/span&gt;">Done</span>    </td>
+                    </tr>
+        </tbody>
+    </table>
+    <div class="end-of-stable-message"></div>
+            <table border="1" >
+<tr>
+    <td bgcolor="#dddddd" colspan="45"><font size="1">
+        Generated at Wed Dec 10 10:50:21 UTC 2025 by Anila Saifan using Jira 1001.0.0-SNAPSHOT#100290-rev:08e635e43358e67e535ec40ade6154e9e54a3a35.
+    </font></td>
+</tr>
+</table>
+
+</body>
+</html>
