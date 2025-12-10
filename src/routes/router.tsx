@@ -90,7 +90,7 @@ export const router = createBrowserRouter([
             element: <OrganizerDashboard />,
           },
 
-          { path: "/dashboard/orgevents", element: <OrganizerEventsPage /> },
+          { path: "/dashboard/orgevents", element: <MyEvents /> },
           { path: "/dashboard/orgusers", element: <OrganizerUsersPage /> },
           {
             path: "/dashboard/checkers",
