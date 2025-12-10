@@ -15,3 +15,9 @@ Clone into your computer
 - `npm run dev`: Starts development server, pulling environment variables from `.env` file
 
 The code is organised as follows
+
+Other docs for reference: pulse-wireframe.png ,pulse-jira.html (around 28 story points completed out of 30) ,Pulse — Smart Event Management App\_ Elevator Pitch.pdf
+
+Agile methodology:
+Scrum
+Collaborative approach
