@@ -1,9 +1,12 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import type { EventType } from "../../types/EventType";
+
 const apiBase = import.meta.env.VITE_PULSE_BACKEND_API_URL;
 interface Props {
-  event?: any;
+  event?: EventType;
   mode: "create" | "edit";
 }
 const EventForm: React.FC<Props> = ({ event, mode }) => {
