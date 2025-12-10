@@ -7,6 +7,7 @@ import CreateEventPage from "../components/dashboard/CreateEvent";
 import DashboardWrapper from "../components/dashboard/DashboardWrapper";
 import EventDetailsPage from "../components/dashboard/EventDetails";
 import EditEventPage from "../components/dashboard/EventEdit";
+import EventForm from "../components/dashboard/EventForm";
 import MyEvents from "../components/dashboard/MyEvents";
 import OrganizerCheckersPage from "../components/dashboard/OrganizerCheckersPage";
 import OrganizerDashboard from "../components/dashboard/OrganizerDashboard";
@@ -69,7 +70,7 @@ export const router = createBrowserRouter([
           { path: "/dashboard/users", element: <UsersPage /> },
 
           { path: "/dashboard/create", element: <CreateEventPage /> },
-          { path: "/dashboard/createevent", element: <AddEventPage /> },
+          { path: "/dashboard/createevent", element: <CreateEventPage /> },
           { path: "/dashboard/createevent/:id", element: <AddEventPage /> },
           { path: "/dashboard/edit/:id", element: <EditEventPage /> },
           { path: "/dashboard/events/:id", element: <EventDetailsPage /> },
