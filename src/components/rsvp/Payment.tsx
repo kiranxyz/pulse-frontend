@@ -53,11 +53,11 @@ const Payment = () => {
   if (!clientSecret || !options) return <p>Loading payment form...</p>;
 
   return (
-    <>
+    <div className="mx-auto mt-10 w-full max-w-lg">
       <Elements stripe={stripePromise} options={options}>
         <CheckoutForm eventId={state.eventId} />
       </Elements>
-    </>
+    </div>
   );
 };
 

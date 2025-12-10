@@ -10,7 +10,6 @@ const JoinEvent = ({ event }: { event: EventType }) => {
   const modalId = "join_event_modal_" + event._id;
 
   const handlePay = () => {
-    //navigate("/payment/" + event.price);
     navigate("/payment", { state: { price: event.price, eventId: event._id } });
   };
 
@@ -30,9 +29,13 @@ const JoinEvent = ({ event }: { event: EventType }) => {
         join
       </button>
       <dialog id={modalId} className="modal">
-        <div className="modal-box">
-          <h3 className="text-lg font-bold">
-            {member?.username?.toUpperCase()} Welcome to Join us at!
+        <div className="modal-box border-4 border-violet-500 text-center">
+          <h3 className="mb-5 text-lg font-bold">
+            <span className="text-2xl text-fuchsia-600">
+              {" "}
+              {member?.username?.toUpperCase()}
+            </span>{" "}
+            Welcome to Join us at!
           </h3>
           {event?.eventType === "free" ? (
             <>
@@ -48,10 +51,8 @@ const JoinEvent = ({ event }: { event: EventType }) => {
             </>
           ) : (
             <>
-              <h3 className="py-3 text-lg font-bold">
-                {event?.title} - Paid Event
-              </h3>
-              <h4 className="mb-20 py-2 text-xl font-semibold">
+              <h3 className="py-3 text-3xl">{event?.title}</h3>
+              <h4 className="mb-20 py-2 text-2xl font-semibold">
                 Price : <span className="text-4xl">{event?.price} </span> Euro
               </h4>
               <button onClick={handlePay} className="btn btn-primary py-2">

@@ -115,7 +115,10 @@ const CheckoutForm = ({ eventId }: { eventId: string }) => {
   };
   return (
     <div className="w-md justify-center space-y-4 text-center">
-      <p>Please fill in the information and press Pay Now</p>
+      <p className="text-3xl">
+        Please fill in the information and press{" "}
+        <span className="text-fuchsia-600"> Pay Now </span>Button
+      </p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <PaymentElement />
         <div className="flex justify-center space-x-4">
