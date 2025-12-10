@@ -46,11 +46,12 @@ const EventForm: React.FC<Props> = ({ event, mode }) => {
     };
     try {
       if (mode === "create") {
+        console.log(`${apiBase}/api/events`);
         await axios.post(`${apiBase}/api/events`, payload);
       } else if (mode === "edit" && event?._id) {
         await axios.put(`${apiBase}/api/events/${event._id}`, payload);
       }
-      navigate("/admin/dashboard/events");
+      navigate("/dashboard/events");
     } catch (err) {
       console.error(err);
     }

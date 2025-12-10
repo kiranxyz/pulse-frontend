@@ -1,4 +1,5 @@
-import { useLocation, useNavigate, Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
+
 import type { EventType } from "../../types/EventType";
 import JoinEvent from "../rsvp/JoinEvent";
 
@@ -17,7 +18,7 @@ const EventCard = ({ event }: { event: EventType }) => {
   return (
     <div className="card bg-base-100 flex cursor-pointer flex-row items-start gap-4 p-4 shadow-md transition hover:shadow-lg">
       {/* Event Image */}
-      <div className="h-32 w-32 shrink-0 overflow-hidden rounded">
+      <div className="h-full w-32 shrink-0 overflow-hidden rounded">
         {event.image ? (
           <img
             src={event.image}
